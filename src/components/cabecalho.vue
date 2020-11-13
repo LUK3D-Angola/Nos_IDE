@@ -36,15 +36,15 @@
             <v-row cols="3" class="pa-0 ma-0 d-flex justify-end">
                
 
-                <v-btn  icon class="green100t" >
+                <v-btn @click="winMinimizar()"  icon class="green100t" >
                     
 
                     <v-icon>mdi-window-minimize</v-icon>
                 </v-btn>
-                <v-btn  icon class="yellow100t" >
+                <v-btn @click="winMmaximizar()" icon class="yellow100t" >
                     <v-icon>mdi-window-maximize</v-icon>
                 </v-btn>
-                <v-btn  icon class="red100t" >
+                <v-btn @click="winFechar()" icon class="red100t" >
                     <v-icon>mdi-close-box-outline</v-icon>
                 </v-btn>
             </v-row>
@@ -57,7 +57,7 @@
 
 <script>
 import i18n from '../i18n';
-
+const {ipcRenderer} = require("electron");
 export default {
     data(){
         return{
@@ -67,6 +67,17 @@ export default {
         }
     },
     methods:{
+          /* Minimizar a janela */
+        winMinimizar:()=>{
+            ipcRenderer.send('minimizar')
+        },
+        winMmaximizar:()=>{
+            ipcRenderer.send('maximizar')
+        },
+        winFechar:()=>{
+            ipcRenderer.send('fechar')
+
+        },
         mudarIdioma(idioma){
 
             if(idioma.key == localStorage.lang)

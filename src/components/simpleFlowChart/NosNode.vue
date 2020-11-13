@@ -1,6 +1,6 @@
 <template>
   <!-- <div  class="flowchart-node terminator" :style="nodeStyle" --> 
- <div  class="flowchart-node" :style="nodeStyle"  
+ <div  class="Nos-Node" :style="nodeStyle"  
     @mousedown="handleMousedown"
     @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave"
@@ -109,7 +109,7 @@
 
 <script>
 export default {
-  name: 'FlowchartNode',
+  name: 'NosNode',
   props: {
     id: {
       type: Number,
@@ -204,14 +204,14 @@ export default {
 $themeColor: rgb(85, 144, 255);
 $portSize: 12;
 
-.flowchart-node {
+.Nos-Node {
   margin: 0;
   min-width: 80px;
  /*  height: 80px; */
   position: absolute;
   box-sizing: border-box;
   border: none;
-  background: white;
+  background: transparent;
   z-index: 1;
   opacity: .9;
   cursor: move;

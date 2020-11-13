@@ -1,3 +1,4 @@
+/* Esta é a pagina inicial onde o utilizador pode criar um novo projecto. */
 <template>
   <div class="home">
    <v-col>
@@ -17,7 +18,7 @@
 
       <v-row class="pl-3">
        
-       <v-icon class="black200t pr-3">mdi-folder-outline</v-icon> <v-chip :class="`${(selected)?'primary':'primary'}`"  @click="selectFolder()" > <label for="" id="caminho" @mouseover="tooltip=$('what_is_your_project_name')" @mouseleave="tooltip=''">{{project_folder}}</label></v-chip>
+       <v-icon class="black200t pr-3">mdi-folder-outline</v-icon> <v-chip :class="`${(selected)?'primary':'primary'}`"  @click="selectFolder()" > <label for="" id="caminho" @mouseover="tooltip=$t('select_folder_for_your_project')" @mouseleave="tooltip=''">{{project_folder}}</label></v-chip>
        
       </v-row>
       <v-divider class="mt-5 black600"  ></v-divider>
@@ -58,11 +59,12 @@
 import i18n from '../i18n';
 const {ipcRenderer} = require("electron");
 import Vue from 'vue';
+import router from '../router';
 
 // eslint-disable-next-line no-unused-vars
 ipcRenderer.on('selectFolder-result', (event, arg) => {
   if(arg == "" || arg == null){
-     home.methods.setProjectFolder(i18n.t('what_is_your_project_name')) 
+     home.methods.setProjectFolder(i18n.t('select_forlder')) 
      return
   }
 
@@ -75,10 +77,17 @@ const home = {
   components: {
  
   },
+  mounted: function () {
+  if(localStorage.url != null && localStorage.url!=''){
+      let url = localStorage.url;
+      localStorage.url = null;
+      router.push('/nodeEditor');
+    }
+},
   data(){
     return{
       items:['Php','Php/Laravel'],
-      project_folder: i18n.t('what_is_your_project_name'),
+      project_folder: i18n.t('select_forlder'),
       selected:false,
       tooltip:"",
       rules: {
@@ -107,7 +116,7 @@ const home = {
       alert(val)
     },
   
-  }
+  },
 };
 
 export default home;

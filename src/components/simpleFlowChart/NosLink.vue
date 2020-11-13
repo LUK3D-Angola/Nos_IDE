@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'FlowchartLink',
+  name: 'NosLink',
   props: {
     // start point position [x, y]
     start: {

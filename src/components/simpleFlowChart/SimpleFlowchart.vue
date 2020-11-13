@@ -4,13 +4,13 @@
     @mouseup="handleUp"
     @mousedown="handleDown">
     <svg width="100%" height="100%" >
-      <flowchart-link v-bind.sync="link" 
+      <NosLink v-bind.sync="link" 
         v-for="(link, index) in lines" 
         :key="`link${index}`"
         @deleteLink="linkDelete(link.id)">
-      </flowchart-link>
+      </NosLink>
     </svg>
-    <flowchart-node v-bind.sync="node" 
+    <Nos-Node v-bind.sync="node" 
       v-for="(node, index) in scene.nodes" 
       :key="`node${index}`"
       :options="nodeOptions"
@@ -19,13 +19,13 @@
       @nodeSelected="nodeSelected(node.id, $event)"
       :type="node.type"
       >
-    </flowchart-node>
+    </Nos-Node>
   </div>
 </template>
 
 <script>
-import FlowchartLink from './FlowchartLink.vue';
-import FlowchartNode from './FlowchartNode.vue';
+import NosLink from './NosLink.vue';
+import NosNode from './NosNode.vue';
 import { getMousePosition } from '../../assets/utility/position';
 
 export default {
@@ -70,8 +70,8 @@ export default {
     };
   },
   components: {
-    FlowchartLink,
-    FlowchartNode,
+    NosLink,
+    NosNode,
   },
   computed: {
     nodeOptions() {

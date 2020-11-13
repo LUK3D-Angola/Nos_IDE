@@ -2,9 +2,9 @@
  <v-container   style="height:100%;" class="pa-0 ma-0">
      
      <v-row class=" pa-0 ma-0   d-flex align-stretch" style="height:100%;">
-          <v-col cols="1" class="pa-0 ma-0" style="max-width:30px; padding-left:10px;">
-             <v-btn flat icon color="primary"  @click="drawer = !drawer">
-                 <v-icon>mdi-hammer-screwdriver</v-icon>
+          <v-col cols="1" class="pa-0 ma-0" style="max-width:40px; padding-left:10px;">
+             <v-btn v-for="(item, i) in sideMenu2Item" :key="i" flat icon color="primary"  @click="item.function()">
+                 <v-icon>{{item.icon}}</v-icon>
              </v-btn>
           </v-col>
       <v-col cols="11" class="pa-0 ma-0 ">
@@ -169,17 +169,31 @@
         </v-expansion-panel>
     </v-expansion-panels>
     </v-navigation-drawer>
+
+    <template>
+        <Definicoes :active="this.settings"></Definicoes>
+        <template>
  </v-container>
 </template>
 
 <script>
+
+
 import SimpleFlowchart from '../components/simpleFlowChart/SimpleFlowchart.vue'
+import Definicoes from '../views/settings.vue'
 import 'prismjs'
 import 'prismjs/themes/prism-coldark-dark.css'
 import Prism from  'vue-prism-component'
+import router from "../router";
+import { ipcRenderer } from 'electron'
 
+ipcRenderer.on('addPlugin',(ev, args)=>{
+    console.log(args);
+    alert('PluginCarregado!!');
+    vm.methods.addAddExtensions(args);
+})
 
-export default {
+var vm = {
 
     components: {
     SimpleFlowchart,
@@ -190,6 +204,7 @@ export default {
         drawer: true,
          tab: null,
         nodeCounts:1,
+        settings:false,
          sideMenuItens: [
           { title: 'Query', item: [{title:'Select'},{title:'Delete'},{title:'Update'},{title:'Insert'}] },
           { title: 'Conditions', item: [{title:'If'},{title:'Swich'}] },
@@ -197,6 +212,39 @@ export default {
           { title: 'Columns', item: [{title:'User'},{title:'Password'},{title:'Email'},{title:'Status'}] },
           { title: 'Variables', item: [{title:'User'},{title:'Password'},{title:'Email'},{title:'Status'}] },
         
+        ],
+        sideMenu2Item:[
+            {title:'Assets', icon:'mdi-hammer-screwdriver', function:(args = null)=>{
+               this.drawer = !this.drawer;
+            }},
+            {title:'Plugins / Extensions', icon:'mdi-puzzle-outline', function:(args = null)=>{
+               ipcRenderer.send('loadPlugin');
+            }},
+            {title:'New Project', icon:'mdi-file-code-outline', function:(args = null)=>{
+                router.push({ path: '/' });
+            },},
+            {title:'New Project', icon:'mdi-cog-outline', function:(args = null)=>{
+                //ipcRenderer.send('settings')
+                this.settings = !this.settings
+            },},
+            {title:'', icon:'mdi-file-code-outline', function:(args = null)=>{
+               // In the main process.
+                    const {BrowserWindow} = require('electron').remote
+                    
+                    // Or use `remote` from the renderer process.
+                    // const {BrowserWindow} = require('electron').remote
+                    
+                    let win = new BrowserWindow({width: 800, height: 600})
+                    win.on('closed', () => {
+                        win = null
+                    })
+                    
+                    // Load a remote URL
+                    win.loadURL('http://localhost/api')
+                    
+                    // Or load a local HTML file
+                    // win.loadURL(`file://${__dirname}/app/index.html`)
+            },},
         ],
         showMenu: false,
             x: 0,
@@ -230,11 +278,22 @@ export default {
     };
 },
 methods:{
+    addAddExtensions:(d)=>{
+       this.addNode(d)
+    },
+  
     addNode:function(node){
+        if(node == null || node == ''){
+            
+        return
+        }else{
+            console.log(node)
+            return;
+        }
 
-        this.nodeCounts +=1;
-         var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type']}
-        this.data.nodes.push(n); 
+        // this.nodeCounts +=1;
+        //  var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type']}
+        // this.data.nodes.push(n); 
 
 
         
@@ -249,15 +308,9 @@ methods:{
         })
       },
 },
-/* 
-watch: {
-    data: function (val) {
-     console.log("Changed " + val)
-    }
-   
-  } */
 
 }
+export default vm;
 </script>
 
 <style >

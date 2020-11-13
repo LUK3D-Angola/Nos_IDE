@@ -1,8 +1,10 @@
 "use strict";
 
-import { app, protocol, BrowserWindow,ipcMain } from "electron";
+import { app, protocol, BrowserWindow,ipcMain ,dialog} from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import vueZoomerMin from "vue-zoomer";
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Scheme must be registered before the app is ready
@@ -10,9 +12,10 @@ protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
 ]);
 
+
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  var win = new BrowserWindow({
     width: 800,
     height: 600,
     frame:false,
@@ -34,6 +37,11 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
   }
+
+  win.on('closed', () => {
+    win = null
+  })
+
 }
 
 // Quit when all windows are closed.
@@ -65,6 +73,18 @@ app.on("ready", async () => {
   }
   createWindow();
  /*  openFolder() */
+
+ BrowserWindow.getFocusedWindow().webContents.on('before-input-event', (event, input) => {
+  // For example, only enable application menu keyboard shortcuts when
+  // Ctrl/Cmd are down.
+  /* if(input.code == 'NumpadAdd' && input.control == true)
+  zoomIn();
+  if(input.key == '-' && input.control == true)
+  zoomOut(); */
+  // win.webContents.setIgnoreMenuShortcuts(!input.control && !input.meta)
+})
+
+
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -99,24 +119,51 @@ ipcMain.on('selectFolder',(event, args)=>{
   
 })
 
+
+
+ipcMain.on('minimizar',()=>{
+  BrowserWindow.getFocusedWindow().minimize()
+  
+})
+
+ipcMain.on('maximizar',()=>{
+  if(BrowserWindow.getFocusedWindow().isMaximized()){
+
+    BrowserWindow.getFocusedWindow().unmaximize()
+    return
+  }
+  BrowserWindow.getFocusedWindow().maximize()
+  
+})
+ipcMain.on('fechar',()=>{
+  BrowserWindow.getFocusedWindow().close()
+  
+})
+
 ipcMain.on('startProject',(event, args)=>{
   createNodeWIndow()
   
 })
+ipcMain.on('settings',(event, args)=>{
+  createSetingsWindow()
+  
+})
+
 
 async function createNodeWIndow(){
 
-    const nodeEditorWindow = new BrowserWindow({
+    let nodeEditorWindow = new BrowserWindow({
       width: 800,
       height: 600,
       frame:false,
-      show:true,
+      show:false,
       webPreferences: {
         // Use pluginOptions.nodeIntegration, leave this alone
         // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
         nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
       }
     });
+
 
 
     
@@ -127,9 +174,92 @@ async function createNodeWIndow(){
     } else {
       createProtocol("app");
       // Load the index.html when not in development
-      nodeEditorWindow.loadURL("app://./index.html");
-      nodeEditorWindow.location = ("http://localhost:8080/nodeEditor")
+      nodeEditorWindow.loadURL("app://./index.html/nodeEditor");
+   
     }
+    nodeEditorWindow.title = "Node Editor";
+     
+    nodeEditorWindow.on('closed', () => {
+      win = null
+    })
 
 
 }
+
+
+
+async function createSetingsWindow(){
+  let pai = BrowserWindow.getFocusedWindow();
+    let settingsWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      frame:false,
+      show:true,
+      modal:true,
+      parent:pai,
+      webPreferences: {
+        // Use pluginOptions.nodeIntegration, leave this alone
+        // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+        nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      }
+    });
+
+    
+
+    
+    if (process.env.WEBPACK_DEV_SERVER_URL) {
+      // Load the url of the dev server if in development mode
+      await settingsWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+      if (!process.env.IS_TEST) settingsWindow.webContents.openDevTools();
+    } else {
+      createProtocol("app");
+      // Load the index.html when not in development
+      settingsWindow.loadURL("app://./index.html");
+      
+    }
+
+   /*  window.location = "/settings" */
+    settingsWindow.title = "Definicoes";
+    // window.location.href = "/settings";
+
+    localStorage.url = "/settings"
+    settingsWindow.on('closed', () => {
+      settingsWindow = null
+    })
+
+
+}
+
+/* Chamar Funcao para carregar plugins */
+ipcMain.on('loadPlugin',()=>{
+  let file = dialog.showOpenDialogSync()
+  loadPlugin(file);
+});
+
+function loadPlugin(file){
+
+  BrowserWindow.getFocusedWindow().webContents.send('addPlugin',(file));
+  console.log('Carregou');
+
+}
+
+
+/* ZOOM IN */
+/* 
+ipcMain.on('zoomIn',()=>{
+  let contents = BrowserWindow.getFocusedWindow.webContents;
+
+  contents.on()
+}) */
+
+
+function zoomIn () {  
+  // webFrame.setZoomFactor(webFrame.getZoomFactor+10);
+  // webContents.setZoomFactor( webContents.getZoomFactor+10)
+}
+function zoomOut () {  
+  // webContents.setZoomFactor( webContents.getZoomFactor-10)
+
+
+}
+

@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import nodeEditor from "../views/nodeEditor.vue";
-
+import settings from "../views/settings.vue"
 Vue.use(VueRouter);
 
 const routes = [
@@ -15,6 +15,11 @@ const routes = [
     path: "/nodeEditor",
     name: "nodeEditor",
     component: nodeEditor
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: settings
   },
   {
     path: "/about",
