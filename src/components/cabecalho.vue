@@ -5,7 +5,7 @@
            <v-row class="align-center px-5 py-1" >
            
             <v-row cols="1" class="pa-0 ma-0 align-center d-flex">
-                 <h3 class="black100t">{Nós}</h3>
+                 <h3 class="black100t">{Nós}</h3> <label for="" class="ml-4 black100t">{{title}}</label>
                  <!--  <v-btn flat class="transparent blue100t" elevation="0" small >
                     Português <v-icon>mdi-translate</v-icon>
                 </v-btn> -->
@@ -33,7 +33,7 @@
             <v-col cols="7" class="dragable  ma-0 ">
 
             </v-col>
-            <v-row cols="3" class="pa-0 ma-0 d-flex justify-end">
+            <v-row v-if="options" cols="3" class="pa-0 ma-0 d-flex justify-end">
                
 
                 <v-btn @click="winMinimizar()"  icon class="green100t" >
@@ -49,6 +49,15 @@
                 </v-btn>
             </v-row>
             </v-row>
+
+
+             <v-progress-linear
+                v-if="loading"
+                indeterminate
+                absolute
+                top
+                color="deep-purple accent-4"
+            ></v-progress-linear>
      
        
     </div>
@@ -58,12 +67,26 @@
 <script>
 import i18n from '../i18n';
 const {ipcRenderer} = require("electron");
+import bus from '../main'
 export default {
+    props:{
+        title:{
+            type:String,
+            default:''
+            
+        },
+        options:{
+            type:Boolean,
+            default:true,
+        },
+        
+    },
     data(){
         return{
 
             idioma: localStorage.langName,
              idiomas:[{name:'Português', key:'pt'},{name:'English',key:'en'}],
+             loading:false
         }
     },
     methods:{
@@ -91,11 +114,16 @@ export default {
             this.idioma =  localStorage.langName;
            
            /*  window.location.reload() */
+        },
+        isloading:function(dados) {
+            this.loading = dados
         }
+        
     },
     mounted: function(){
-        this.$toasted.global.welcome(i18n.t('welcome'))
-    }
+       // this.$toasted.global.welcome(i18n.t('welcome'))
+       window.eventBus.$on('loading', (dados)=>this.isloading(dados));
+    },
     
 }
 </script>

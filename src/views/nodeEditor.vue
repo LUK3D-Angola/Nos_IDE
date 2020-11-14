@@ -66,13 +66,15 @@
                   
                     {{this.data}}
                 </Prism>
+
+              
             </v-card>
       </v-tab-item>
     </v-tabs-items>
 
       
               
-        
+      <Definicoes v-on:addplugin="addAddExtensions($event)" v-on:closeSettings="toggleSettings()" :dialog="this.settings"></Definicoes>    
 
         <!-- MENU DE CONTESTO / CONTEXT MENU -->
             <v-menu
@@ -170,9 +172,9 @@
     </v-expansion-panels>
     </v-navigation-drawer>
 
-    <template>
-        <Definicoes :active="this.settings"></Definicoes>
-        <template>
+  
+        
+    
  </v-container>
 </template>
 
@@ -180,12 +182,13 @@
 
 
 import SimpleFlowchart from '../components/simpleFlowChart/SimpleFlowchart.vue'
-import Definicoes from '../views/settings.vue'
+import Definicoes from '../components/settings'
 import 'prismjs'
 import 'prismjs/themes/prism-coldark-dark.css'
 import Prism from  'vue-prism-component'
 import router from "../router";
 import { ipcRenderer } from 'electron'
+import LoadScript from 'vue-plugin-load-script';
 
 ipcRenderer.on('addPlugin',(ev, args)=>{
     console.log(args);
@@ -197,7 +200,8 @@ var vm = {
 
     components: {
     SimpleFlowchart,
-    Prism
+    Prism,
+    Definicoes
   },
   data() {
     return {
@@ -226,6 +230,9 @@ var vm = {
             {title:'New Project', icon:'mdi-cog-outline', function:(args = null)=>{
                 //ipcRenderer.send('settings')
                 this.settings = !this.settings
+
+                console.log(this.settings)
+               
             },},
             {title:'', icon:'mdi-file-code-outline', function:(args = null)=>{
                // In the main process.
@@ -278,8 +285,45 @@ var vm = {
     };
 },
 methods:{
-    addAddExtensions:(d)=>{
-       this.addNode(d)
+    toggleSettings:function(){
+            this.settings = !this.settings
+    },
+    addAddExtensions:function(d){
+        
+         if(d == null || d == ''){
+            
+        return
+        }else{
+            var fs = require('fs');
+            let fn =  fs.readFileSync( "C:/Users/filip/Documents/teste.nosx", 'utf-8', (err, data) => {
+                        if(err){
+                            return;
+                        }
+                        return data
+                    });
+
+            if(typeof d.function == "string"){
+                var newMenuItem = {title: d.title, icon: d.icon, function: Function(fn)}
+                /* d.function = new Function(d.function.split('('), "b", "return a + b"); */
+
+                
+            }
+             console.log(newMenuItem)
+             this.sideMenu2Item.push(newMenuItem)
+             console.log(this.sideMenu2Item)
+            this.$toasted.show('Plugin ' + newMenuItem.title + ' foi adicionado',  {
+                                                                    type : 'alert',
+                                                                    icon : 'mdi-alert',
+                                                                    position:'bottom-right',
+                                                                    action : {
+                                                                        text : 'Cancel',
+                                                                        onClick : (e, toastObject) => {
+                                                                            toastObject.goAway(0);
+                                                                        },
+                                                                    
+                                                                        className:'toast'
+                                                                    }, duration:1000});
+      }
     },
   
     addNode:function(node){
@@ -288,12 +332,25 @@ methods:{
         return
         }else{
             console.log(node)
+            this.nodeCounts +=1;
+            var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type']}
+            this.data.nodes.push(n); 
+            this.$toasted.show('No ' + node['label'] + ' foi adicionado',  {
+                                                                    type : 'info',
+                                                                    icon : 'mdi-alert',
+                                                                    position:'bottom-right',
+                                                                    action : {
+                                                                        text : 'Cancel',
+                                                                        onClick : (e, toastObject) => {
+                                                                            toastObject.goAway(0);
+                                                                        },
+                                                                    
+                                                                        className:'toast'
+                                                                    }, duration:1000});
             return;
         }
 
-        // this.nodeCounts +=1;
-        //  var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type']}
-        // this.data.nodes.push(n); 
+        
 
 
         

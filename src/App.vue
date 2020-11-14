@@ -38,8 +38,21 @@ export default {
     font-size: 35px !important;
   }
 
+.hideY{
+  overflow-y: hidden !important;
+}
+.hideY{
+  overflow-x: hidden !important;
+}
+.showY{
+  overflow-y: auto !important;
+}
+.showY{
+  overflow-x: auto !important;
+}
 html, body{
   height: 100%;
+  overflow: hidden;
 }
 .black100{
   background: #B2B3B6 !important;

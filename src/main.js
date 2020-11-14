@@ -7,13 +7,16 @@ import vuetify from "./plugins/vuetify";
 import VueZoomer from 'vue-zoomer'
 import i18n from './i18n';
 import globalAlerts from './globalAlerts';
+import {Nos} from './noEngine';
 
+import LoadScript from 'vue-plugin-load-script';
 // import vue-panzoom
 import panZoom from 'vue-panzoom'
 
 
 Vue.config.productionTip = false;
 
+window.eventBus = new Vue();
 new Vue({
   router,
   store,
@@ -24,4 +27,6 @@ new Vue({
 }).$mount("#app");
  
 // install plugin
-Vue.use(panZoom).use(VueZoomer)
+Vue.use(panZoom).use(VueZoomer).use(Nos)
+
+Vue.use(LoadScript)

@@ -3,7 +3,6 @@
 import { app, protocol, BrowserWindow,ipcMain ,dialog} from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
-import vueZoomerMin from "vue-zoomer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -36,6 +35,12 @@ async function createWindow() {
     createProtocol("app");
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
+
+    
+  localStorage.exepath = process.env.PORTABLE_EXECUTABLE_DIR.toString();
+  localStorage.devpath = process.env.WEBPACK_DEV_SERVER_URL.toString();
+
+
   }
 
   win.on('closed', () => {
@@ -63,8 +68,11 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
+  
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
+
+  
     try {
       await installExtension(VUEJS_DEVTOOLS);
     } catch (e) {
@@ -72,6 +80,7 @@ app.on("ready", async () => {
     }
   }
   createWindow();
+
  /*  openFolder() */
 
  BrowserWindow.getFocusedWindow().webContents.on('before-input-event', (event, input) => {

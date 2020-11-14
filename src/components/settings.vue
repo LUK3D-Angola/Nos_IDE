@@ -1,27 +1,27 @@
-<template>
-    <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
+<template >
+ <v-row justify="center" class="hideY">
+    <v-dialog 
+      v-model="show"
       persistent
       max-width="600px"
+      fullscreen
+      
     >
-
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
+     <v-col cols="12" class="black500">
+        <n-header :options='false' title="Settings"></n-header>
+    </v-col>
+      <v-card class="black500 showY" width="100%" max-width="100%">
         <v-card-text>
           <v-container>
             <v-row>
+               
               <v-col
                 cols="12"
                 sm="6"
                 md="4"
               >
-                <v-text-field
-                  label="Legal first name*"
-                  required
-                ></v-text-field>
+               <v-btn @click="openPlugin()">Open Plugin</v-btn>
+               <v-btn @click="savePlugin()">Save my Plugin</v-btn>
               </v-col>
               <v-col
                 cols="12"
@@ -87,7 +87,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="this.closeDialog"
           >
             Close
           </v-btn>
@@ -105,18 +105,53 @@
 </template>
 
 <script>
+import cabecalho from './cabecalho'
+import { dialog } from 'electron'
+import Vue from 'vue'
 export default {
-
-     data: () => ({
-      dialog: this.active,
-    }),
-    props:{
-        active:{
-            type:Boolean,
-            default:false,
-            required:true,
-        }
+    components:{
+        'n-header':cabecalho
+    },
+    props: {
+    dialog: {
+      type: Boolean,
+      default: false,
+      required: true,
+     
     }
+  },
+  data(){
+      return{
+          show:false
+      }
+  },
+  methods:{
+      showDialog:function(){
+          this.show = !this.show;
+      },
+      closeDialog:function(){
+          this.$emit('closeSettings')
+      },
+      openPlugin: function(){
+            window.Nos.loadPlugin().then(
+               function(value){
+                   console.log(value)
+               },function(error){
+                    console.log(error)
+               }
+           );
+           
+      },
+      savePlugin:function(){
+          let val = window.Nos.exportPlugin();
+           this.$emit('addplugin',{title:'Filas', icon:'mdi-code-brackets', function:"function(args = null){this.drawer = !this.drawer;}"})
+      }
+  },
+  watch:{
+      dialog:function(val,old){
+        this.show = !this.show;
+      }
+  }
 
 }
 </script>
