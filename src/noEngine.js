@@ -71,15 +71,8 @@ import Vue from 'vue'
             })
         },
         /* Esta funcção procura por  Arquivos de uma determinada extencao dentro de pastas*/
-        getFilesByExtentio:async function getFiles(startPath,filter){
-
+        getFilesByExtention:async function getFiles(startPath,filter, withDir= true,  _callback = function(){}){
             window.Nos.isLoading(true)
-
-            
-
-            setTimeout(() => {
-
-
                 var path = require('path'), 
                 fs   = require('fs');
                 var results = [];
@@ -92,27 +85,171 @@ import Vue from 'vue'
                 for(var i=0;i<files.length;i++){
                     var filename=path.join(startPath,files[i]);
                     var stat = fs.lstatSync(filename);
-                    if (stat.isDirectory()){
+                    if (stat.isDirectory() && withDir){
                         results = results.concat(getFiles(filename,filter)); //recurse
                     }
                     else if (filename.indexOf(filter)>=0) {
-                        console.log('#-> Found: ',filename);
+                       // console.log('#-> Found: ',filename);
                         results.push(filename);
                     }
                 }
-
                
                 window.Nos.isLoading(false)
+                _callback(results);
                 return results;
-                
-            }, 3000);
-
-           
 
             },
         isLoading:(valor)=>{
             window.eventBus.$emit('loading', valor);
+        },
+        compile:async ()=>{
+          window.Nos.getFilesByExtention('C:/Users/filip/Documents/myFirstNoProject','.nos',false,(result)=>{
+            window.Nos.readFile(result[0],(dados)=>{
+                window.Nos.toBinary(dados);
+            })
+          })
+        },
+        /* FUncao para ler arquivo */
+        readFile:(path,_callback=function(){})=>{
+                var fs = require('fs'); // Load the File System to execute our common tasks (CRUD)
+                fs.readFile(path, 'utf-8', (err, data) => {
+                    // console.log("lendoArquivo " + path);
+                    if(err){
+                        // console.log("Hove um erro");
+                        Vue.toasted.show("An error ocurred reading the file :" + err.message, {
+                            position: 'bottom-right',
+                            type:'error',
+                            duration: 2000
+                        })
+                        // alert();
+                        return;
+                    }
+                    _callback(data);
+                });
+        },
+        /* Funcao para converter codigo nos para  */
+        toBinary:(nosCode)=>{
+
+            
+            
+            var newVal = nosCode.replace(/^\s*[\r\n]/gm, '\n');
+            let nosCoreCode = [];
+            var code = newVal.split('\n');
+            for (let i = 0; i < code.length; i++) {
+                if(code[i].includes('function')){
+                    /* COndigo para as funcoes */
+                    var functioname;
+                    let codeFunction;
+/* Pegando o nome da funcao */
+                    try {
+                        var el = code[i].split('function')[1]
+                        
+                        if(el !== undefined || el!== null || el !=="undefined")
+                        functioname  = el.replace('{','').replace('}','').trim()
+                       } catch (error) {
+                            console.log("Erro! " + error)
+                    }
+                    // Pegando os valores da funcao
+                        let tmp = []
+                        let lastIndex = 0;
+                        for (let tmpI = i+1; tmpI < code.length; tmpI++) {
+                            if(!code[tmpI].includes('}'))
+                            tmp.push(code[tmpI])
+                            if(code[tmpI].includes('}')){
+                                lastIndex = tmpI
+                                break
+                            }
+                        }
+                         let nv = code[i]/* .replace('{','').replace('}','') */
+                         /* console.log(code)
+                         console.log(code.indexOf('}')) */
+                       /*   console.log(tmp);
+                         console.log("++++++++++++++++++++++++++++++++++++++") */
+                         if(!nv.includes('}')|| !nv.includes('{')){
+                            codeFunction = (nv)
+                         }
+                         let subel=[];
+                         tmp.forEach(cm=>{
+                             if(cm.indexOf(':') > -1){
+                                /*  console.log( cm.split(':')[0]) */
+                                 let label = cm.split(':')[0].trimStart().trimEnd()
+                                 window.Nos.dicionario(cm.split(':')[0].trim(),(valor)=>{
+                                     subel.push({label:label, type: valor,value:cm.split(':')[1].trim().replace('.','')})
+                                 }) 
+                             }else{
+                                 let label = cm.trimStart().trimEnd().split(' ')[0]
+                                 let name = cm.trimStart().trimEnd().split(' ')[1]
+                                  window.Nos.dicionario(label.trim(),(valor)=>{
+                                     subel.push({label:name, type: label ,value:""})
+                                 }) 
+                             }
+                         })
+                         nosCoreCode.push({label:functioname, type:"function", value:subel})
+
+                    i = lastIndex;
+
+                }else{
+                    let subel=[];
+               
+                   let cm = code[i]
+                   
+                       console.log(cm)
+                        if(cm.indexOf(':') > -1){
+                           /*  console.log( cm.split(':')[0]) */
+                            let label = cm.split(':')[0].trimStart().trimEnd()
+                            window.Nos.dicionario(cm.split(':')[0].trim(),(valor)=>{
+                                nosCoreCode.push({label:label, type: valor,value:cm.split(':')[1].trim().replace('.','')})
+                            }) 
+                           
+                        }else{
+                           
+                            let label = cm.trimStart().trimEnd().split(' ')[0]
+                            let name = cm.trimStart().trimEnd().split(' ')[1]
+                             window.Nos.dicionario(label.trim(),(valor)=>{
+                                
+                                nosCoreCode.push({label:name, type: label ,value:""})
+                            }) 
+                           
+                        }
+                      
+                    
+    
+                  /*   nosCoreCode.push({label:functioname, type:window.Nos.dicionario(), value:subel}) */
+
+                   /*  console.log(i.toString() + " " + code[i]); */
+
+                }
+                
+            }
+     
+            
+             console.log(JSON.stringify(nosCoreCode))
+
+        },
+        dicionario:(palavra, _callback = function(){})=>{
+            let palavrasReservadas = [{"read":"internalFunction"},{"show":"internalFunction"},{"var":"var"},{"use":"injection"},{"add":"internalFunction"}]
+           
+           
+            palavrasReservadas.forEach(element => {
+
+                var keys = Object.keys(element);
+                var value = Object.values(element);
+               /*  console.log( keys[ 0 ] ); */
+             /*    console.log( palavra +"=="+ keys[ 0 ] ); */
+                if( palavra == keys[ 0 ] ){
+                    _callback(value[ 0 ])
+                    return 
+
+                }
+                
+            
+            });
+           
+
+           /*  return palavrasReservadas[palavra]; */
+
         }
+
         
     }
 

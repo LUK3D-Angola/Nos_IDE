@@ -2,78 +2,84 @@
  <v-container   style="height:100%;" class="pa-0 ma-0">
      
      <v-row class=" pa-0 ma-0   d-flex align-stretch" style="height:100%;">
-          <v-col cols="1" class="pa-0 ma-0" style="max-width:40px; padding-left:10px;">
+          <v-col cols="2" class="pa-0 ma-0" style="max-width:40px; padding-left:10px;">
              <v-btn v-for="(item, i) in sideMenu2Item" :key="i" flat icon color="primary"  @click="item.function()">
                  <v-icon>{{item.icon}}</v-icon>
              </v-btn>
           </v-col>
-      <v-col cols="11" class="pa-0 ma-0 ">
+    <v-row cols="11" class="pa-0 ma-0 ">
          <!--   <v-btn flat router to="/" color="primary">text</v-btn>
             <v-btn @click="addNode()" color="primary">Add Node</v-btn>
             <h1>Node Editor</h1> -->
-     <v-tabs
-      v-model="tab"
-      background-color="#131414"
-      left
-      show-arrows
-      dark
-      icons
-      color="grey"
-    >
-      <v-tabs-slider></v-tabs-slider>
-
-      <v-tab href="#tab-1">
-        Node Editor
-        <v-icon class="ml-2">mdi-family-tree</v-icon>
-      </v-tab>
-
-      <v-tab href="#tab-2">
-        Code Preview
-        <v-icon  class="ml-2">mdi-code-json</v-icon>
-      </v-tab>
-
-    </v-tabs>
-
-    <v-tabs-items v-model="tab" style="height:87%;" class="black500 pa-0 ma-0" >
-        <v-tab-item
-          value="tab-1"
-          style="height:100%;"
-          class="black500 pa-0 ma-0"
+    <v-col cols="10" lg="9" sm="8" class="pa-0 ma-0">
+        
+        <v-tabs
+        v-model="tab"
+        background-color="#131414"
+        left
+        show-arrows
+        dark
+        icons
+        color="grey"
         >
+        <v-tabs-slider></v-tabs-slider>
 
-           
-            <v-col style="height:100%;" class="pa-0 ma-0">
+        <v-tab href="#tab-1">
+            Node Editor
+            <v-icon class="ml-2">mdi-family-tree</v-icon>
+        </v-tab>
 
-           
-                  <v-card
-                    :ripple="false" 
-                    @contextmenu="show"
-                     style="height:100%;"
-                     class="pa-0 ma-0"
-                     color="#000000"
-                     elevation="0"
-                >
-                <simple-flowchart @contextmenu="show" :scene.sync="data" class="black100"  style="height:100%; background-image:url(../img/grid.png) !important;"></simple-flowchart>
-                <p id="debug"> {{this.data}}</p>
+        <v-tab href="#tab-2">
+            Code Preview
+            <v-icon  class="ml-2">mdi-code-json</v-icon>
+        </v-tab>
+
+        </v-tabs>
+
+        <v-tabs-items v-model="tab" style="height:87%;" class="black500 pa-0 ma-0" >
+            <v-tab-item
+            value="tab-1"
+            style="height:100%;"
+            class="black500 pa-0 ma-0"
+            >
+
+            
+                <v-col style="height:100%;" class="pa-0 ma-0">
+
+            
+                    <v-card
+                        :ripple="false" 
+                        @contextmenu="show"
+                        style="height:100%;"
+                        class="pa-0 ma-0"
+                        color="#000000"
+                        elevation="0"
+                    >
+                    <simple-flowchart @contextmenu="show" :scene.sync="data" class="black100"  style="height:100%; background-image:url(../img/grid.png) !important;"></simple-flowchart>
+                    <!-- <p id="debug"> {{this.data}}</p> -->
+                    </v-card>
+                </v-col>
+            
+            <!-- Code Preview -->
+        </v-tab-item >
+            <v-tab-item value="tab-2" style="height:100%;" class="black500" >
+                <v-card flat  style="max-height:90vh !important; overflow:auto;" class="black500 pa-0 ma-0" >
+                    <Prism  class="codePreview" language="javascript" style="max-height:100%;">
+                    
+                        {{this.data}}
+                    </Prism>
+
+                
                 </v-card>
-            </v-col>
-           
-           <!-- Code Preview -->
-      </v-tab-item >
-        <v-tab-item value="tab-2" style="height:100%;" class="black500" >
-            <v-card flat  style="max-height:90vh !important; overflow:auto;" class="black500 pa-0 ma-0" >
-                <Prism  class="codePreview" language="javascript" style="max-height:100%;">
-                  
-                    {{this.data}}
-                </Prism>
+        </v-tab-item>
+        </v-tabs-items>
 
-              
-            </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-
-      
-              
+        
+    </v-col>
+    <v-col cols="2" lg="3" sm="4" class="pa-0 ma-0">
+        <n-properties></n-properties>
+    </v-col>
+                
       <Definicoes v-on:addplugin="addAddExtensions($event)" v-on:closeSettings="toggleSettings()" :dialog="this.settings"></Definicoes>    
 
         <!-- MENU DE CONTESTO / CONTEXT MENU -->
@@ -101,7 +107,7 @@
 
         <!-- SIDE BAR MENU -->
 
-      </v-col>
+      </v-row>
      </v-row>
      
  <v-navigation-drawer
@@ -183,6 +189,7 @@
 
 import SimpleFlowchart from '../components/simpleFlowChart/SimpleFlowchart.vue'
 import Definicoes from '../components/settings'
+import propertiePanel from '../components/propertiePanel'
 import 'prismjs'
 import 'prismjs/themes/prism-coldark-dark.css'
 import Prism from  'vue-prism-component'
@@ -201,7 +208,8 @@ var vm = {
     components: {
     SimpleFlowchart,
     Prism,
-    Definicoes
+    Definicoes,
+    "n-properties":propertiePanel
   },
   data() {
     return {
@@ -257,13 +265,13 @@ var vm = {
             x: 0,
             y: 0,
             items: [
-                { title: 'Talbe', node:{id:0, x:0, y:0, type:"terminator",label:"Utilizadores"}},
-                { title: 'Row', node:{id:0, x:0, y:0, type:"manual_input",label:"Utilizadores1"} },
-                { title: 'Select', node:{id:0, x:0, y:0, type:"process",label:"Utilizadores2"} },
-                {title: 'Insert', node:{id:0, x:0, y:0, type:"display",label:"Utilizadores3"} },
-                {title: 'Where', node:{id:0, x:0, y:0, type:"decision",label:"Utilizadores4"} },
-                {title: 'Preparation', node:{id:0, x:0, y:0, type:"preparation",label:"Utilizadores4"} },
-                {title: 'Pre Process', node:{id:0, x:0, y:0, type:"predefined_process",label:"Utilizadores4"} },
+                {title: 'Start', node:{id:0, x:0, y:0, type:"terminator",label:"Utilizadores",value:{var:"nome"}}},
+                {title: 'Read', node:{id:0, x:0, y:0, type:"manual_input",label:"Utilizadores1", value:{}} },
+                {title: 'Select', node:{id:0, x:0, y:0, type:"process",label:"Utilizadores2"}, value:{} },
+                {title: 'Show', node:{id:0, x:0, y:0, type:"display",label:"Utilizadores3", value:{}}},
+                {title: 'if', node:{id:0, x:0, y:0, type:"decision",label:"Utilizadores4", value:{}} },
+                {title: 'Preparation', node:{id:0, x:0, y:0, type:"preparation",label:"Utilizadores4", value:{}} },
+                {title: 'Pre Process', node:{id:0, x:0, y:0, type:"predefined_process",label:"Utilizadores4",value:{}} },
             ],
         data: {
             
@@ -333,7 +341,7 @@ methods:{
         }else{
             console.log(node)
             this.nodeCounts +=1;
-            var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type']}
+            var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type'],value:node['value']}
             this.data.nodes.push(n); 
             this.$toasted.show('No ' + node['label'] + ' foi adicionado',  {
                                                                     type : 'info',
@@ -364,6 +372,12 @@ methods:{
           this.showMenu = true
         })
       },
+    mounted:function(){
+        window.eventBus.on('nodeSelected',val=>{
+            console.log("selected")
+            console.log(val)
+        })
+    }
 },
 
 }

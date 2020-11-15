@@ -16,7 +16,7 @@ import panZoom from 'vue-panzoom'
 
 Vue.config.productionTip = false;
 
-window.eventBus = new Vue();
+window.eventBus = new Vue()
 new Vue({
   router,
   store,

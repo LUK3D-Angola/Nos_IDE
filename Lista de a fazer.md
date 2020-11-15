@@ -4,7 +4,7 @@
 
 Sintaxe = Codigo
 Semantica = Significado
-Lexico = Como se fala
+Lexico = listade palavras reservadas
 
 
 criar a Sintaxe
@@ -27,15 +27,7 @@ traduzir para .noss e salvar numa pasta temporaria
 
 
 ### Sintaxe
-    use nos.math
 
-    var nome;
-
-    inicio{
-        mostre:"Insira Um nome".
-        ler:nome.
-        mostre:nome.
-    }
 
     [
         {label:"nos.math", type:"use", value:"nos.math"},
