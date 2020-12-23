@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import nodeEditor from "../views/nodeEditor.vue";
+import codeEditor from "../views/codeEditor.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
     path: "/nodeEditor",
     name: "nodeEditor",
     component: nodeEditor
+  },
+  {
+    path: "/codeEditor",
+    name: "codeEditor",
+    component: codeEditor
   },
  
   {
@@ -28,7 +34,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  //mode: "hash",
+  mode: process.env.IS_ELECTRON ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes
 });

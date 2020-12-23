@@ -13,5 +13,21 @@
     "select_folder_for_your_project": "Informe o diretorio do seu projecto",
     "the_name_of_the_server": "O nome do servido Ex: Localhost",
     "the_name_of_the_server_user": "O nome do Utilizador do servido Ex: root",
-    "the_password_of_the_server": "A senha do servido Ex: root"
+    "the_password_of_the_server": "A senha do servido Ex: root",
+
+
+    "leia":"read",
+    "var":"var",
+    "funcao":"function",
+    "se":"if",
+    "senao":"else",
+    "faca":"do",
+    "enquanto":"while",
+    "para":"for",
+    "mostre":"show",
+    "inteiro":"int",
+    "numero":"number",
+    "caractere":"string",
+    "boleano":"boolean"
+    
 }

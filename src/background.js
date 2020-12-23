@@ -34,7 +34,8 @@ async function createWindow() {
   } else {
     createProtocol("app");
     // Load the index.html when not in development
-    win.loadURL("app://./index.html");
+    win.loadURL("./index.html");
+    // win.loadURL("app://./index.html");
 
     
   localStorage.exepath = process.env.PORTABLE_EXECUTABLE_DIR.toString();
@@ -183,7 +184,7 @@ async function createNodeWIndow(){
     } else {
       createProtocol("app");
       // Load the index.html when not in development
-      nodeEditorWindow.loadURL("app://./index.html/nodeEditor");
+      nodeEditorWindow.loadURL("app://./index.html");
    
     }
     nodeEditorWindow.title = "Node Editor";

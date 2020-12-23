@@ -1,412 +1,268 @@
 <template>
- <v-container   style="height:100%;" class="pa-0 ma-0">
-     
-     <v-row class=" pa-0 ma-0   d-flex align-stretch" style="height:100%;">
-          <v-col cols="2" class="pa-0 ma-0" style="max-width:40px; padding-left:10px;">
-             <v-btn v-for="(item, i) in sideMenu2Item" :key="i" flat icon color="primary"  @click="item.function()">
-                 <v-icon>{{item.icon}}</v-icon>
-             </v-btn>
-          </v-col>
-    <v-row cols="11" class="pa-0 ma-0 ">
-         <!--   <v-btn flat router to="/" color="primary">text</v-btn>
-            <v-btn @click="addNode()" color="primary">Add Node</v-btn>
-            <h1>Node Editor</h1> -->
-    <v-col cols="10" lg="9" sm="8" class="pa-0 ma-0">
-        
-        <v-tabs
-        v-model="tab"
-        background-color="#131414"
-        left
-        show-arrows
-        dark
-        icons
-        color="grey"
-        >
-        <v-tabs-slider></v-tabs-slider>
-
-        <v-tab href="#tab-1">
-            Node Editor
-            <v-icon class="ml-2">mdi-family-tree</v-icon>
-        </v-tab>
-
-        <v-tab href="#tab-2">
-            Code Preview
-            <v-icon  class="ml-2">mdi-code-json</v-icon>
-        </v-tab>
-
-        </v-tabs>
-
-        <v-tabs-items v-model="tab" style="height:87%;" class="black500 pa-0 ma-0" >
-            <v-tab-item
-            value="tab-1"
-            style="height:100%;"
-            class="black500 pa-0 ma-0"
-            >
-
-            
-                <v-col style="height:100%;" class="pa-0 ma-0">
-
-            
-                    <v-card
-                        :ripple="false" 
-                        @contextmenu="show"
-                        style="height:100%;"
-                        class="pa-0 ma-0"
-                        color="#000000"
-                        elevation="0"
-                    >
-                    <simple-flowchart @contextmenu="show" :scene.sync="data" class="black100"  style="height:100%; background-image:url(../img/grid.png) !important;"></simple-flowchart>
-                    <!-- <p id="debug"> {{this.data}}</p> -->
-                    </v-card>
-                </v-col>
-            
-            <!-- Code Preview -->
-        </v-tab-item >
-            <v-tab-item value="tab-2" style="height:100%;" class="black500" >
-                <v-card flat  style="max-height:90vh !important; overflow:auto;" class="black500 pa-0 ma-0" >
-                    <Prism  class="codePreview" language="javascript" style="max-height:100%;">
-                    
-                        {{this.data}}
-                    </Prism>
-
-                
-                </v-card>
-        </v-tab-item>
-        </v-tabs-items>
-
-        
-    </v-col>
-    <v-col cols="2" lg="3" sm="4" class="pa-0 ma-0">
-        <n-properties></n-properties>
-    </v-col>
-                
-      <Definicoes v-on:addplugin="addAddExtensions($event)" v-on:closeSettings="toggleSettings()" :dialog="this.settings"></Definicoes>    
-
-        <!-- MENU DE CONTESTO / CONTEXT MENU -->
-            <v-menu
-            @mouseleave="showMenu = !showMenu"
-            v-model="showMenu"
-            :position-x="x"
-            :position-y="y"
-            absolute
-            offset-y
-           disable-keys
-            >
-            <v-list  class="black400">
-                <v-list-item
-                v-for="(item, index) in items"
-                :key="index"
-                
-                >
-                <v-list-item-title>
-                    <v-btn  @click="addNode(item.node)" elevation-1 small color="primary">{{ item.title }}</v-btn>
-                </v-list-item-title>
-                </v-list-item>
-            </v-list>
-            </v-menu>
-
-        <!-- SIDE BAR MENU -->
-
-      </v-row>
-     </v-row>
-     
- <v-navigation-drawer
-      v-model="drawer"
-    
-    class="black400"
-      app
-    >
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-icon class="black100t">mdi-hammer-screwdriver</v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title class="black100t">ToolBox</v-list-item-title>
-        </v-list-item-content>
-         <v-list-item-avatar>
-              <v-btn flat icon color="primary"  >
-                   <v-icon class="black100t">mdi-plus-box-multiple</v-icon>
-             </v-btn>
-        
-        </v-list-item-avatar>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-expansion-panels >
-        <v-expansion-panel
-      class="black400"
-
-        v-for="menu in sideMenuItens" :key="menu.title"
-        >
-        <v-expansion-panel-header class="black100t">
-            {{menu.title}}
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="black500">
-          
-            <v-list dense>
-                <v-list-item
-                v-for="item in menu.item"
-                :key="item.title"
-                link
-                >
-
-                <v-col class="pa-0 ma-0">
-                    <v-row>
-                    <v-list-item-icon>
-                    <v-badge
-                        dot
-                        offset-x="-10"
-                        offset-y="15"
-                        color="primary"
-                    ></v-badge>
-                       <!--  <v-icon class="black100t">{{ item.icon }}</v-icon> -->
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                        <v-list-item-title class="black100t">{{ item.title }}</v-list-item-title>
-                    </v-list-item-content>
-                    </v-row>
-                    <v-divider></v-divider>
-                </v-col>
-                
-                </v-list-item>
-            </v-list>
-        </v-expansion-panel-content>
-        </v-expansion-panel>
-    </v-expansion-panels>
-    </v-navigation-drawer>
-
   
+       <div class="hideX hideY">
+         <cabecalho></cabecalho>
+          <div id="rete"  class="black600">
+
+          
+         </div>
         
-    
- </v-container>
+          <v-card v-draggable style="position:fixed; top:10px; left:10px; max-width:200px" class="black500 black100t ">
+            <v-card-title primary-title class="toolBox">
+              ToolBOx
+            </v-card-title>
+            
+        
+           <v-card-text>
+              <v-row >
+
+                
+
+              <v-expansion-panels accordion class="pa-0 ma-0 black500">
+                <v-expansion-panel
+                  v-for="(item,i) in noBox"
+                  :key="i"
+                   class="pa-0 ma-0 black500 "
+                >
+
+                <v-expansion-panel-header class="black100t ma-0 pa-0 "> 
+                  <v-row class="pa-0 ma-0">
+                     <v-icon  class="yellow100t mr-2 ml-2" v-text="item.icon">  </v-icon> {{item.title}}
+                  </v-row>
+                </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                   
+                    <v-list dense class="ma-0 pa-0">
+                     <!--  <v-subheader>{{item.title}}</v-subheader> -->
+                        <v-list-item-group v-model="selectedItem"  class="black500 black100t" >
+                          <v-list-item  v-for="tool in item.options" :key="tool.title" @click="addNode(tool.title)" >
+                            <v-list-item-icon>
+                              <v-icon  class="black200t" v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                              <v-list-item-title class="black200t" v-text="tool.title"></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                      </v-list-item-group>
+                    </v-list>
+
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-row>
+           </v-card-text>
+
+            
+            
+          </v-card>
+
+
+          <v-card v-draggable  center style="position:fixed; left:50vh; bottom:40px; height:60px; width:80vh" class="black500 black100t">
+            <v-card-title primary-title  class="d-flex justify-space-between">
+             <v-btn flat icon class="green100t" >
+               <v-icon >mdi-content-save-outline</v-icon>
+             </v-btn>
+             <v-btn flat icon class="red100t" >
+               <v-icon >mdi-code-braces</v-icon>
+             </v-btn>
+             <v-btn @click="paseNos()" flat icon class="yellow100t" >
+               <v-icon >mdi-play-box</v-icon>
+             </v-btn>
+             <v-btn flat icon class="black100t" >
+               <v-icon >mdi-help-rhombus-outline</v-icon>
+             </v-btn>
+             <v-btn flat icon class="blue100t" @click="codeEditor()">
+               <v-icon >mdi-application-export</v-icon>
+             </v-btn>
+            </v-card-title>
+
+            
+            
+          </v-card>
+          
+       </div>
+       
+  
 </template>
 
 <script>
 
-
-import SimpleFlowchart from '../components/simpleFlowChart/SimpleFlowchart.vue'
-import Definicoes from '../components/settings'
-import propertiePanel from '../components/propertiePanel'
-import 'prismjs'
-import 'prismjs/themes/prism-coldark-dark.css'
-import Prism from  'vue-prism-component'
+import cabecalho from "@/components/cabecalho.vue"
+import Rete from "rete";
+import ConnectionPlugin from "rete-connection-plugin";
+import VueRenderPlugin from "rete-vue-render-plugin";
+import CustomNode from "../components/NoComponents/custom_node";
+import CommentPlugin from 'rete-comment-plugin';
+import { Draggable } from 'draggable-vue-directive'
+import HistoryPlugin from 'rete-history-plugin';
+import KeyBoardPlugin from 'rete-keyboard-plugin';
+import CodePlugin from 'rete-code-plugin';
 import router from "../router";
-import { ipcRenderer } from 'electron'
-import LoadScript from 'vue-plugin-load-script';
+const engine = new Rete.Engine("demo@0.1.0");
+let codes = [];
+let codeId = [];
 
-ipcRenderer.on('addPlugin',(ev, args)=>{
-    console.log(args);
-    alert('PluginCarregado!!');
-    vm.methods.addAddExtensions(args);
-})
+async function init() {
 
-var vm = {
+  window.nodeC = 0;
 
-    components: {
-    SimpleFlowchart,
-    Prism,
-    Definicoes,
-    "n-properties":propertiePanel
+    const container = document.querySelector("#rete");
+    const editor = new Rete.NodeEditor("demo@0.1.0", container);
+    editor.use(ConnectionPlugin);
+    editor.use(VueRenderPlugin, {
+      component: CustomNode,
+    });
+    
+  editor.use(CommentPlugin, { margin: 20 });
+  editor.use(HistoryPlugin, { keyboard: true });
+  editor.use(KeyBoardPlugin);
+  
+
+  editor.on(
+      "process nodecreated noderemoved connectioncreated connectionremoved",
+      async () => {
+        await engine.abort();
+        await engine.process(editor.toJSON());
+      }
+    );
+  window.nosEditor =editor;
+  window.engine =engine;
+
+
+  editor.on('nodecreated', node => {
+    /* return editor.nodes.some(item => item.name === node.name); */ // prevent adding new node
+    window.nodeC += 1;
+    window.n += 1;
+    console.info("Node Criado",node)
+  });
+  editor.on('noderemoved', node => {
+    window.n -= 1;
+    console.info("qtd: ", window.nodeC)
+  });
+
+  editor.on('connectioncreate',(el)=>{
+    if(el['input'].key !="run")
+    return
+    codeId.push(el['input'].node.data.id)
+    codeId.push(el['input'].node.data.id)
+    codes.push(el['input'].node.data.code)
+    console.info(codes);
+    console.info(el);
+
+    
+    console.info('allNodes: ', editor.toJSON())
+    
+    
+  });
+
+  editor.on('connectionremoved',conn =>{
+    engine.process(null, 1);
+    codes.splice(codeId.indexOf(conn['input'].node.data.id), 1);
+   /*  delete codes[codes.indexOf(conn['input'].node.data.code)]; */
+    codeId.splice(codeId.indexOf(conn['input'].node.data.id),1);
+    console.info("conexao perdida: ", codes);
+
+  });
+  editor.on('process', async () => {
+  
+   let log =  await engine.process(editor.toJSON());
+   console.info('allNodes: ', log)
+});
+}
+
+
+window.generate =  async function generateCode(){
+
+    let links = window.nosEditor.view.connections;
+    
+
+    links.forEach((element,i) => {
+       console.info("link " + i , element.inputNode.node.data.code)
+    });
+    // console.log(links)
+}
+
+
+export default {
+  components: {
+   cabecalho 
   },
-  data() {
-    return {
-        drawer: true,
-         tab: null,
-        nodeCounts:1,
-        settings:false,
-         sideMenuItens: [
-          { title: 'Query', item: [{title:'Select'},{title:'Delete'},{title:'Update'},{title:'Insert'}] },
-          { title: 'Conditions', item: [{title:'If'},{title:'Swich'}] },
-          { title: 'Repetition', item: [{title:'For'},{title:'While'},{title:'doWhile'},{title:'Foreach'}] },
-          { title: 'Columns', item: [{title:'User'},{title:'Password'},{title:'Email'},{title:'Status'}] },
-          { title: 'Variables', item: [{title:'User'},{title:'Password'},{title:'Email'},{title:'Status'}] },
-        
-        ],
-        sideMenu2Item:[
-            {title:'Assets', icon:'mdi-hammer-screwdriver', function:(args = null)=>{
-               this.drawer = !this.drawer;
-            }},
-            {title:'Plugins / Extensions', icon:'mdi-puzzle-outline', function:(args = null)=>{
-               ipcRenderer.send('loadPlugin');
-            }},
-            {title:'New Project', icon:'mdi-file-code-outline', function:(args = null)=>{
-                router.push({ path: '/' });
-            },},
-            {title:'New Project', icon:'mdi-cog-outline', function:(args = null)=>{
-                //ipcRenderer.send('settings')
-                this.settings = !this.settings
-
-                console.log(this.settings)
-               
-            },},
-            {title:'', icon:'mdi-file-code-outline', function:(args = null)=>{
-               // In the main process.
-                    const {BrowserWindow} = require('electron').remote
-                    
-                    // Or use `remote` from the renderer process.
-                    // const {BrowserWindow} = require('electron').remote
-                    
-                    let win = new BrowserWindow({width: 800, height: 600})
-                    win.on('closed', () => {
-                        win = null
-                    })
-                    
-                    // Load a remote URL
-                    win.loadURL('http://localhost/api')
-                    
-                    // Or load a local HTML file
-                    // win.loadURL(`file://${__dirname}/app/index.html`)
-            },},
-        ],
-        showMenu: false,
-            x: 0,
-            y: 0,
-            items: [
-                {title: 'Start', node:{id:0, x:0, y:0, type:"terminator",label:"Utilizadores",value:{var:"nome"}}},
-                {title: 'Read', node:{id:0, x:0, y:0, type:"manual_input",label:"Utilizadores1", value:{}} },
-                {title: 'Select', node:{id:0, x:0, y:0, type:"process",label:"Utilizadores2"}, value:{} },
-                {title: 'Show', node:{id:0, x:0, y:0, type:"display",label:"Utilizadores3", value:{}}},
-                {title: 'if', node:{id:0, x:0, y:0, type:"decision",label:"Utilizadores4", value:{}} },
-                {title: 'Preparation', node:{id:0, x:0, y:0, type:"preparation",label:"Utilizadores4", value:{}} },
-                {title: 'Pre Process', node:{id:0, x:0, y:0, type:"predefined_process",label:"Utilizadores4",value:{}} },
-            ],
-        data: {
+    data(){
+      return{
+        noBox:[
+            {title:"Variables", options:[
+            {title:"For"},
+            {title:"While"},
+            {title:"DoWhile"},
+            {title:"Foreach"},], icon:"mdi-infinity"
+            },
+            {title:"Functions", options:[
+            {title:"Start"},
+            {title:"Read"},
+            {title:"Show"},
+            {title:"Integer"},
+            {title:"Float"},
+            {title:"Var"},
+            {title:"If-Else"},
+            {title:"End"}, ],icon:"mdi-function"
+            },
+            {title:"Loops", options:[
+            {title:"For"},
+            {title:"While"},
+            {title:"DoWhile"},
+            {title:"Foreach"},], icon:"mdi-infinity"
+            },
             
-                centerX: 614,
-                centerY: 140,
-                scale: 1,
-                nodes: [
-                 
-                    ],
-                    links: [
-                   /*  {
-                        id: 3,
-                        from: 2, // node id the link start
-                        to: 4,  // node id the link end
-                    } */
-                ]
-        },
-        
-    };
-},
-methods:{
-    toggleSettings:function(){
-            this.settings = !this.settings
-    },
-    addAddExtensions:function(d){
-        
-         if(d == null || d == ''){
-            
-        return
-        }else{
-            var fs = require('fs');
-            let fn =  fs.readFileSync( "C:/Users/filip/Documents/teste.nosx", 'utf-8', (err, data) => {
-                        if(err){
-                            return;
-                        }
-                        return data
-                    });
+            {title:"Math functions", options:[
+            {title:"Add"},
+            {title:"Subtract"},
+            {title:"Divide"},
+            {title:"Multiply"},
+            {title:"Sin"},
+            {title:"Cos"},
+            ], icon:"mdi-infinity"
+            },
+            {title:"Logic Operators", options:[
+            {title:">"},
+            {title:"<"},
+            {title:"=="},
+            {title:"!="},
+          
+            ], icon:"mdi-infinity"
+            },
+        ]
 
-            if(typeof d.function == "string"){
-                var newMenuItem = {title: d.title, icon: d.icon, function: Function(fn)}
-                /* d.function = new Function(d.function.split('('), "b", "return a + b"); */
-
-                
-            }
-             console.log(newMenuItem)
-             this.sideMenu2Item.push(newMenuItem)
-             console.log(this.sideMenu2Item)
-            this.$toasted.show('Plugin ' + newMenuItem.title + ' foi adicionado',  {
-                                                                    type : 'alert',
-                                                                    icon : 'mdi-alert',
-                                                                    position:'bottom-right',
-                                                                    action : {
-                                                                        text : 'Cancel',
-                                                                        onClick : (e, toastObject) => {
-                                                                            toastObject.goAway(0);
-                                                                        },
-                                                                    
-                                                                        className:'toast'
-                                                                    }, duration:1000});
       }
     },
-  
-    addNode:function(node){
-        if(node == null || node == ''){
-            
-        return
-        }else{
-            console.log(node)
-            this.nodeCounts +=1;
-            var n = {id:  this.nodeCounts, label: node['label'], x: node['x'], y:node['y'], type:node['type'],value:node['value']}
-            this.data.nodes.push(n); 
-            this.$toasted.show('No ' + node['label'] + ' foi adicionado',  {
-                                                                    type : 'info',
-                                                                    icon : 'mdi-alert',
-                                                                    position:'bottom-right',
-                                                                    action : {
-                                                                        text : 'Cancel',
-                                                                        onClick : (e, toastObject) => {
-                                                                            toastObject.goAway(0);
-                                                                        },
-                                                                    
-                                                                        className:'toast'
-                                                                    }, duration:1000});
-            return;
-        }
 
-        
-
-
-        
+    directives: {
+      Draggable,
     },
-    show (e) {
-        e.preventDefault()
-        this.showMenu = false
-        this.x = e.clientX
-        this.y = e.clientY
-        this.$nextTick(() => {
-          this.showMenu = true
-        })
-      },
-    mounted:function(){
-        window.eventBus.on('nodeSelected',val=>{
-            console.log("selected")
-            console.log(val)
-        })
-    }
-},
 
+    mounted:()=>{
+        init();
+    },
+    methods:{
+      addNode:function(name){
+        window.Nos.addNo(name)
+      },
+      codeEditor:()=>{
+        router.push('/codeEditor')
+      },
+      paseNos:()=>{
+        window.generate;
+      }
+    }     
+    
 }
-export default vm;
 </script>
 
-<style >
-.flowchart-container{
-    background: #0C0C0D !important;
-}
 
-.node-port.node-output{
-    background: yellow;
-}
+<style scoped>
 
-*::-webkit-scrollbar {
-    width: 8px;
-}
- 
-*::-webkit-scrollbar-track {
-     background: #0000009f;
-  /*   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.535);  */
-   /*  border-radius: 10px; */
-}
- 
-*::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: #4343FE;
-    -webkit-box-shadow: inset 0 0 6px #4343FE; 
+#rete{
+    height: 90vh !important;
+    width: 100% !important;
 }
 
 </style>

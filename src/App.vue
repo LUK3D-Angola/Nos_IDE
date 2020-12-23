@@ -2,7 +2,7 @@
   <v-app>
 
       <v-main class="black500">
-        <cabecalho></cabecalho>
+       <!--  <cabecalho></cabecalho> -->
         <router-view class="pa-0"></router-view>
       </v-main>
    
@@ -11,12 +11,12 @@
 
 <script>
 
-import cabecalho from "@/components/cabecalho.vue"
+/* import cabecalho from "@/components/cabecalho.vue" */
 export default {
   name: "App",
 
   components: {
-  cabecalho
+/*   cabecalho */
   },
 
   data: () => ({
@@ -41,7 +41,7 @@ export default {
 .hideY{
   overflow-y: hidden !important;
 }
-.hideY{
+.hideX{
   overflow-x: hidden !important;
 }
 .showY{
@@ -53,6 +53,14 @@ export default {
 html, body{
   height: 100%;
   overflow: hidden;
+}
+.whiteb{
+  background: #ecf1ff !important;
+  background-color: #ecf1ff !important;
+}
+.white100{
+  background: #ecf1ff !important;
+  background-color: #ecf1ff !important;
 }
 .black100{
   background: #B2B3B6 !important;
@@ -79,7 +87,7 @@ html, body{
   background-color: #0C0C0D !important;
 }
 .black100t, .black100t  .v-input__control .v-text-field__slot input,.black100t  .v-input__control .v-text-field__slot .v-label, .black100t div .v-input__icon i, .black100t  .v-input__control .v-text-field__slot, .black100t  .v-input__control div div div div input, .black100t .v-select__selection.v-select__selection--comma, .black100t .v-input__control div div label{
-  color: #B2B3B6 !important;
+  color: #c7c7c7 !important;
 }
 .black200t, .black200t  .v-input__control .v-text-field__slot input,.black200t  .v-input__control .v-text-field__slot .v-label, .black200t div .v-input__icon i, .black200t  .v-input__control .v-text-field__slot, .black200t  .v-input__control div div div div input, .black200t .v-select__selection.v-select__selection--comma, .black200t .v-input__control div div label{
   color: #66676A !important;
@@ -95,6 +103,10 @@ html, body{
 }
 .black600t, .black600t  .v-input__control .v-text-field__slot input,.black600t  .v-input__control .v-text-field__slot .v-label, .black600t div .v-input__icon i, .black600t  .v-input__control .v-text-field__slot, .black600t  .v-input__control div div div div input, .black600t .v-select__selection.v-select__selection--comma, .black600t .v-input__control div div label{
   color: #0C0C0D !important;
+}
+.bblack600, .bblack600  .v-input__control .v-text-field__slot input,.bblack600  .v-input__control .v-text-field__slot .v-label, .bblack600 div .v-input__icon i, .bblack600  .v-input__control .v-text-field__slot, .bblack600  .v-input__control div div div div input, .bblack600 .v-select__selection.v-select__selection--comma, .bblack600 .v-input__control div div label{
+  border-color: #0C0C0D !important;
+  border-width: 4px !important;
 }
 
 

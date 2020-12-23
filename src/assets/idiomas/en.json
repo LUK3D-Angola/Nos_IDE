@@ -13,5 +13,19 @@
     "select_folder_for_your_project":"Select a folder for your project",
     "the_name_of_the_server":"The name of the server",
     "the_name_of_the_server_user":"The name of the server user Eg: root",
-    "the_password_of_the_server":"The password of the server Eg: root"
+    "the_password_of_the_server":"The password of the server Eg: root",
+
+    "read":"read",
+    "var":"var",
+    "function":"function",
+    "if":"if",
+    "else":"else",
+    "do":"do",
+    "while":"while",
+    "for":"for",
+    "show":"show",
+    "int":"int",
+    "number":"number",
+    "string":"string",
+    "boolean":"boolean"
 }

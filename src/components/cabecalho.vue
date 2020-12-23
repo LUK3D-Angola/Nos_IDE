@@ -1,14 +1,11 @@
 <template>
 
-    <div class="header">
+    <div class="header" >
     
-           <v-row class="align-center px-5 py-1" >
+           <v-row class="align-center px-5 py-1" style="z-index:100 !important;" >
            
             <v-row cols="1" class="pa-0 ma-0 align-center d-flex">
                  <h3 class="black100t">{Nós}</h3> <label for="" class="ml-4 black100t">{{title}}</label>
-                 <!--  <v-btn flat class="transparent blue100t" elevation="0" small >
-                    Português <v-icon>mdi-translate</v-icon>
-                </v-btn> -->
 
                     <v-menu offset-y>
                         <template v-slot:activator="{ on, attrs }">
@@ -29,6 +26,9 @@
                             </v-list-item>
                         </v-list>
                     </v-menu>
+
+                    <!-- <v-btn v-if="func!=null" @click="func()" depressed small color="primary"><v-icon>mdi-play-box</v-icon></v-btn> -->
+                    <slot></slot>
             </v-row>
             <v-col cols="7" class="dragable  ma-0 ">
 
@@ -70,6 +70,12 @@ const {ipcRenderer} = require("electron");
 import bus from '../main'
 export default {
     props:{
+        func:{
+            /* type:function(){} */
+        },
+        func2:{
+            /* type:function(){} */
+        },
         title:{
             type:String,
             default:''

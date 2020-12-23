@@ -47,14 +47,14 @@
          <v-divider></v-divider>
         <div class=" black100t">
             <v-col class="ma-0 pa-0">
-                <v-row class=" justify-space-between"> 
-                     <p class="mt-2"> <v-icon class="black200t  ml-5 mr-2">mdi-dots-vertical-circle</v-icon> Filipe: String</p>
+                <v-row v-for="data in values" :key="data.label" class=" justify-space-between"> 
+                     <p class="mt-2"> <v-icon class="black200t  ml-5 mr-2">mdi-dots-vertical-circle</v-icon> {{data.label}}: {{data.type}}</p>
                      <v-btn color="error"  small text fab class="mr-5"> <v-icon>mdi-minus-circle</v-icon></v-btn>
                 </v-row>
-                <v-row class=" justify-space-between"> 
+              <!--   <v-row class=" justify-space-between"> 
                      <p class="mt-2"> <v-icon class="black200t  ml-5 mr-2">mdi-dots-vertical-circle</v-icon> Filipe: String</p>
                      <v-btn color="error"  small text fab class="mr-5"> <v-icon>mdi-minus-circle</v-icon></v-btn>
-                </v-row>
+                </v-row> -->
                 
                 
             </v-col>
@@ -84,6 +84,12 @@
 
 <script>
 export default {
+
+    props: {
+        values:{
+            Type:Array,
+        }
+    }
 
 }
 </script>

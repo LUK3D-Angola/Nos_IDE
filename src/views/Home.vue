@@ -1,19 +1,20 @@
 /* Esta é a pagina inicial onde o utilizador pode criar um novo projecto. */
 <template>
   <div class="home">
+       <cabecalho :options="true" ></cabecalho>
    <v-col>
-     <v-text-field :rules="rules.name" @mouseover="tooltip=$t('what_is_your_project_name')" @mouseleave="tooltip=''"  background-color="#0C0C0D" class="black300t" color="#ffffff" flat dense solo :label="$t('project_name')" prepend-icon="mdi-card-text-outline">
+     <v-text-field v-model="projectName"  :rules="rules.name" @mouseover="tooltip=$t('what_is_your_project_name')" @mouseleave="tooltip=''"  background-color="#0C0C0D" class="black300t projectName" color="#ffffff" flat dense solo :label="$t('project_name')" prepend-icon="mdi-card-text-outline">
 
      </v-text-field>
       <v-select
       
       background-color="#0C0C0D"
       class="black300t"
-     
+      v-model="targetPlataform"
       prepend-icon="mdi-code-json"
       flat dense solo 
           :items="items"
-          label="Language"
+          label="Target Plataform"
         ></v-select>
 
       <v-row class="pl-3">
@@ -23,25 +24,23 @@
       </v-row>
       <v-divider class="mt-5 black600"  ></v-divider>
       <v-row>
-         <v-subheader class="black200t">Database Connection</v-subheader>
+         <v-subheader class="black200t">Project Info</v-subheader>
       </v-row>
       <v-row>
         <v-col cols="6">
           
-             <v-text-field @mouseover="tooltip='The name of the Server Host Ex: Localhost '" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t" value="http://127.0.0.1" color="#ffffff" flat dense solo label="Host" prepend-icon="mdi-domain"></v-text-field>
+             <v-text-field v-model="projectAuthor" @mouseover="tooltip='Your Name'" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t"  color="#ffffff" flat dense solo label="Author Name" prepend-icon="mdi-account"></v-text-field>
          
-             <v-text-field @mouseover="tooltip='The name of the Database'" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t" color="#ffffff" flat dense solo label="Database" prepend-icon="mdi-database"></v-text-field>
         </v-col>
         <v-col cols="6">
-             <v-text-field @mouseover="tooltip='The name of the Server User Ex: root '" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t" value="root" color="#ffffff" flat dense solo label="Server Username" prepend-icon="mdi-account"></v-text-field>
-            <v-text-field  @mouseover="tooltip='The password of the Server : root '" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t" color="#ffffff" flat dense solo label="Server Password" prepend-icon="mdi-form-textbox-password"></v-text-field>
+             <v-text-field v-model="projectVersion" @mouseover="tooltip='The versio of the project'" @mouseleave="tooltip=''" background-color="#0C0C0D" class="black300t"  color="#ffffff" flat dense solo label="Project Version Ex: 0.1" prepend-icon="mdi-account"></v-text-field>
 
         </v-col>
       </v-row>
      
       <v-row>
          <v-col cols="6">
-        <v-btn rooter to="/nodeEditor" small color="primary elevation-0">Start Project</v-btn>
+          <v-btn @click="createProject()" small color="primary elevation-0">Start Project</v-btn>
          </v-col>
       </v-row>
    </v-col>
@@ -60,7 +59,8 @@ import i18n from '../i18n';
 const {ipcRenderer} = require("electron");
 import Vue from 'vue';
 import router from '../router';
-
+import fs from 'fs';
+import cabecalho from "../components/cabecalho.vue"
 // eslint-disable-next-line no-unused-vars
 ipcRenderer.on('selectFolder-result', (event, arg) => {
   if(arg == "" || arg == null){
@@ -75,18 +75,23 @@ ipcRenderer.on('selectFolder-result', (event, arg) => {
 const home = {
   name: "Home",
   components: {
- 
+ cabecalho,
   },
   mounted: function () {
-  if(localStorage.url != null && localStorage.url!=''){
+  /* if(localStorage.url != null && localStorage.url!=''){
       let url = localStorage.url;
       localStorage.url = null;
       router.push('/nodeEditor');
-    }
+    } */
 },
   data(){
     return{
-      items:['Php','Php/Laravel'],
+      projectName:'',
+      targetPlataform:'',
+      projectFolder:'',
+      projectAuthor:'',
+      projectVersion:'',
+      items:['Windows Aplication'],
       project_folder: i18n.t('select_forlder'),
       selected:false,
       tooltip:"",
@@ -108,6 +113,21 @@ const home = {
     },
     openNodeWindow(){
         ipcRenderer.send("startProject","hello!")
+    },
+    createProject:async function(){
+
+     let project = window.Nos.getProjectInfo() 
+     project.name = this.projectName;
+     project.path = document.getElementById("caminho").innerText;
+     project.author = this.projectAuthor;
+     project.version = this.projectVersion;
+     project.type = this.targetPlataform;
+
+     window.Nos.createProject(project.path, project.name,project, ()=>{
+      router.push('/codeEditor', {projectName:this.projectName, projectFolder:this.projectFolder, projectAuthor: this.projectAuthor, projectVersion:this.projectVersion})
+
+     });
+
     }
   
   },

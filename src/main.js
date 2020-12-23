@@ -7,7 +7,8 @@ import vuetify from "./plugins/vuetify";
 import VueZoomer from 'vue-zoomer'
 import i18n from './i18n';
 import globalAlerts from './globalAlerts';
-import {Nos} from './noEngine';
+import {Nos} from './NosEngine/noEngine';
+
 
 import LoadScript from 'vue-plugin-load-script';
 // import vue-panzoom
@@ -16,7 +17,7 @@ import panZoom from 'vue-panzoom'
 
 Vue.config.productionTip = false;
 
-window.eventBus = new Vue()
+window.eventBus = new Vue({store})
 new Vue({
   router,
   store,
