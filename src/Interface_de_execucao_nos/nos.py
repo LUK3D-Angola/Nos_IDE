@@ -1,18 +1,18 @@
-nome = ""
-ano_nascimento = ""
-print('Informe o nome')
+name = ""
+surname = ""
+print('Enter the name')
 t = input() 
 try: 
-	nome = float(t)
+	name = float(t)
 except :
-	nome = t
-print('informe o ano de nascimento')
+	name = t
+print('Enter surmname')
 t = input() 
 try: 
-	ano_nascimento = float(t)
+	surname = float(t)
 except :
-	ano_nascimento = t
-print(nome*3,'a sua idade e',(2020-ano_nascimento))
+	surname = t
+print(name, surname)
 t = input() 
 try: 
 	value = float(t)
