@@ -1,20 +1,37 @@
-name = ""
-surname = ""
-print('Enter the name')
+nome = ""
+sexo = ""
+peso_ideal = ""
+print('Informe o Nome')
 t = input() 
 try: 
-	name = float(t)
+	nome = float(t)
 except :
-	name = t
-print('Enter surmname')
+	nome = t
+print('Informe o sexo')
 t = input() 
 try: 
-	surname = float(t)
+	sexo = float(t)
 except :
-	surname = t
-print(name, surname)
+	sexo = t
+ = =  72,7 * altura  - 58
+ = else {
+ = =  62,1 * altura  – 44,7
+ = }
+print(peso_ideal)
+n1 = ""
+n2 = ""
+r = ""
+print('Informe o primeiro valor')
 t = input() 
 try: 
-	value = float(t)
+	n1 = float(t)
 except :
-	value = t
+	n1 = t
+print('Informe o segundo valor')
+t = input() 
+try: 
+	n2 = float(t)
+except :
+	n2 = t
+ = =n1+n2
+print(r)
