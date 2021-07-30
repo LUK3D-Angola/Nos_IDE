@@ -19,6 +19,7 @@ async function createWindow() {
     height: 600,
     frame:false,
     webPreferences: {
+      //devTools:false,
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
@@ -237,7 +238,6 @@ async function createSetingsWindow(){
       settingsWindow = null
     })
 
-
 }
 
 /* Chamar Funcao para carregar plugins */
@@ -246,13 +246,30 @@ ipcMain.on('loadPlugin',()=>{
   loadPlugin(file);
 });
 
+
+ipcMain.on('run',(event, code)=>{
+  const { exec } = require("child_process");
+  exec("python "+code, (error, data, getter) => {
+    if(error){
+      console.log("error",error.message);
+      return;
+    }
+    if(getter){
+      console.log("data",data);
+      return;
+    }
+    console.log("data",data);
+
+  });
+});
+
 function loadPlugin(file){
 
   BrowserWindow.getFocusedWindow().webContents.send('addPlugin',(file));
   console.log('Carregou');
-
+   
 }
-
+ 
 
 /* ZOOM IN */
 /* 

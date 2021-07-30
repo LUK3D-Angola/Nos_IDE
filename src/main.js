@@ -8,6 +8,7 @@ import VueZoomer from 'vue-zoomer'
 import i18n from './i18n';
 import globalAlerts from './globalAlerts';
 import {Nos} from './NosEngine/noEngine';
+import  './NosEngine/core/nos';
 
 
 import LoadScript from 'vue-plugin-load-script';

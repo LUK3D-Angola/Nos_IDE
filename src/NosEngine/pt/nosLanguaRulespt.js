@@ -11,15 +11,20 @@ let rules = {
         'faca',
         'enquanto',
         'para',
+        'paraInteiro',
+        'paraTexto',
+        'enquanto',
+        'importa',
 
     ],
 
     typeKeywords: [
         'inteiro',
-        'numero',
-        'caractere',
+        'decimal',
         'boleano',
-        'var',
+        'dinamico',
+        'texto',
+        'real',
         
     ],
 

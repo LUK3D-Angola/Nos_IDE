@@ -33,6 +33,7 @@
         <MonacoEditor
           theme="vs-dark"
           @editorWillMount="editorDidMount"
+          
           class="editor"
           v-model="code"
           language="Nos"
@@ -347,7 +348,11 @@ var vm = {
         editor(window.Nos.monacoTmp);
     },
     compile() {
-      window.Nos.compile(this.code);
+      var res = window.NOS.Transpile(this.code);
+      //ipcRenderer.send("run",res);
+      console.log("Resultado: ",res);
+      window.Nos.justExec(res);
+      //window.Nos.compile(this.code);
     },
     toggleSettings: function () {
       this.settings = !this.settings;
@@ -447,7 +452,24 @@ var vm = {
     editorDidMount(monaco) {
 
         window.Nos.monacoTmp = monaco;
+        monaco.languages.registerHoverProvider('Nos', {
+       provideHover: function (model, position, token) {
+        var line = model.getLineContent(position.lineNumber);
+         console.log("MOSTRANDO: ", line)
+         console.log("MOSTRANDO: ", model, position , token)
+        return {
+           range: new monaco.Range(1, 1, model.getLineCount(), model.getLineMaxColumn(model.getLineCount())),
+          contents: [
+            { value: '**SOURCE**' },
+            { value: typeof(model).toString(), position , token }
+          ]
+        };
+    }
+    });
+
       editor(monaco);
+
+      
     },
   },
 };

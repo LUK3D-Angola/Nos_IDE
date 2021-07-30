@@ -105,6 +105,38 @@ let t = 'luk3disthebest';
         isLoading:(valor)=>{
             window.eventBus.$emit('loading', valor);
         },
+        justExec:async (code)=>{
+           
+
+            if(code != null){
+                var fs = require('fs'); // Load the File System to execute our common tasks (CRUD)
+                fs.writeFile(`${process.cwd()}`+ "\\src\\Interface_de_execucao_nos\\nos.py", code, function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    
+                    
+                    const path = require('path');
+                    console.log(`Current directory: ${process.cwd()}`);
+                    // shell.openExternal(path.join(`${process.cwd()}`+ "\\src\\Interface_de_execucao_nos", 'compiler.pyc'));
+                    let p = path.join(`${process.cwd()}`+ "\\src\\Interface_de_execucao_nos\\", 'nos.py');
+                    let p2 = path.join(`${process.cwd()}`, "\\src\\Interface_de_execucao_nos\\",);
+                    window.Nos.pyExec( p, p2);
+
+
+                });
+
+                
+
+               
+                    
+               
+
+                return
+            }
+
+       
+        },
         compile:async (code)=>{
            
 
@@ -428,7 +460,7 @@ let t = 'luk3disthebest';
         },
         saveProject(index = 0, code = ""){
             let project = window.Nos.getProjectInfo();
-            let path = project.path + "\\" + project.name + "\\"+project.code[index].label.toLowerCase()+ ".nos";
+            let path = project.path + "\\" + project.name + "\\"+project.code[index].label.toLowerCase()+ ".no";
             let fs = require('fs');
 
         

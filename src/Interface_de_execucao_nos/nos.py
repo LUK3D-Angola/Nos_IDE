@@ -1,20 +1,8 @@
-name = ""
-surname = ""
-print('Enter the name')
-t = input() 
-try: 
-	name = float(t)
-except :
-	name = t
-print('Enter surmname')
-t = input() 
-try: 
-	surname = float(t)
-except :
-	surname = t
-print(name, surname)
-t = input() 
-try: 
-	value = float(t)
-except :
-	value = t
+
+nome=""
+idade=0
+pause=""
+nome=input("Informe o nome: ")
+idade=input("Informe a idade: ")
+print(nome, "a sua idade é: ", idade)
+pause=input("Pressione qualquer tecla para continuar.: ")
