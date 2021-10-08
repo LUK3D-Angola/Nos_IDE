@@ -3,10 +3,28 @@
     style="height: 100%; min-width: 100%; max-width: 100%"
     class="pa-0 ma-0"
   >
-    <cabecalho :func="compile" >
-        <v-btn  @click="openFile" small color="transparent" class="ml-2 elevation-0 black100t"><v-icon>mdi-folder-plus</v-icon></v-btn>
-        <v-btn  @click="saveProject" small color="transparent" class="ml-2 elevation-0 black100t"><v-icon>mdi-content-save-outline</v-icon></v-btn>
-        <v-btn  @click="compile" small color="transparent" class="ml-2 elevation-0 red100t"><v-icon>mdi-play-box</v-icon></v-btn>
+    <cabecalho :func="compile">
+      <v-btn
+        @click="openFile"
+        small
+        color="transparent"
+        class="ml-2 elevation-0 black100t"
+        ><v-icon>mdi-folder-plus</v-icon></v-btn
+      >
+      <v-btn
+        @click="saveProject"
+        small
+        color="transparent"
+        class="ml-2 elevation-0 black100t"
+        ><v-icon>mdi-content-save-outline</v-icon></v-btn
+      >
+      <v-btn
+        @click="compile"
+        small
+        color="transparent"
+        class="ml-2 elevation-0 red100t"
+        ><v-icon>mdi-play-box</v-icon></v-btn
+      >
     </cabecalho>
     <v-row
       cols="12"
@@ -33,7 +51,6 @@
         <MonacoEditor
           theme="vs-dark"
           @editorWillMount="editorDidMount"
-          
           class="editor"
           v-model="code"
           language="Nos"
@@ -127,11 +144,11 @@ ipcRenderer.on("addPlugin", (ev, args) => {
 });
 
 var vm = {
-    computed:{
-        code(){
-            return this.$store.state.ProjectInfo.code[0].code;
-        }
+  computed: {
+    code() {
+      return this.$store.state.ProjectInfo.code[0].code;
     },
+  },
   components: {
     cabecalho,
     SimpleFlowchart,
@@ -142,7 +159,7 @@ var vm = {
   },
   data() {
     return {
-       code: window.Nos.getCurrentClass().code,
+      code: window.Nos.getCurrentClass().code,
       drawer: true,
       tab: null,
       nodeCounts: 1,
@@ -329,28 +346,26 @@ var vm = {
         centerY: 140,
         scale: 1,
         nodes: [],
-        links: [
-       
-        ],
+        links: [],
       },
     };
   },
   methods: {
-    openFile(){
-        window.Nos.openProject((projectInfo)=>{
-            this.code = projectInfo.code[0].code;
-        })
+    openFile() {
+      window.Nos.openProject((projectInfo) => {
+        this.code = projectInfo.code[0].code;
+      });
     },
-    saveProject(){
-        window.Nos.saveProject(0,this.code)
+    saveProject() {
+      window.Nos.saveProject(0, this.code);
     },
-    translate(){
-        editor(window.Nos.monacoTmp);
+    translate() {
+      editor(window.Nos.monacoTmp);
     },
     compile() {
       var res = window.NOS.Transpile(this.code);
       //ipcRenderer.send("run",res);
-      console.log("Resultado: ",res);
+      console.log("Resultado: ", res);
       window.Nos.justExec(res);
       //window.Nos.compile(this.code);
     },
@@ -450,26 +465,28 @@ var vm = {
     },
     /* MONACO EDITOR */
     editorDidMount(monaco) {
-
-        window.Nos.monacoTmp = monaco;
-        monaco.languages.registerHoverProvider('Nos', {
-       provideHover: function (model, position, token) {
-        var line = model.getLineContent(position.lineNumber);
-         console.log("MOSTRANDO: ", line)
-         console.log("MOSTRANDO: ", model, position , token)
-        return {
-           range: new monaco.Range(1, 1, model.getLineCount(), model.getLineMaxColumn(model.getLineCount())),
-          contents: [
-            { value: '**SOURCE**' },
-            { value: typeof(model).toString(), position , token }
-          ]
-        };
-    }
-    });
+      window.Nos.monacoTmp = monaco;
+      monaco.languages.registerHoverProvider("Nos", {
+        provideHover: function (model, position, token) {
+          var line = model.getLineContent(position.lineNumber);
+          console.log("MOSTRANDO: ", line);
+          console.log("MOSTRANDO: ", model, position, token);
+          return {
+            range: new monaco.Range(
+              1,
+              1,
+              model.getLineCount(),
+              model.getLineMaxColumn(model.getLineCount())
+            ),
+            contents: [
+              { value: "**SOURCE**" },
+              { value: typeof model.toString(), position, token },
+            ],
+          };
+        },
+      });
 
       editor(monaco);
-
-      
     },
   },
 };
