@@ -15,7 +15,6 @@ let rules = {
         'paraTexto',
         'enquanto',
         'importa',
-
     ],
 
     typeKeywords: [
@@ -25,7 +24,6 @@ let rules = {
         'dinamico',
         'texto',
         'real',
-        
     ],
 
     operators: [
@@ -225,4 +223,4 @@ function getRules() {
     return rules;
 }
 
-module.exports = rules;
+export default rules;
