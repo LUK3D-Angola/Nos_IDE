@@ -21,7 +21,7 @@ const routes = [
     name: "codeEditor",
     component: codeEditor
   },
- 
+
   {
     path: "/about",
     name: "About",
