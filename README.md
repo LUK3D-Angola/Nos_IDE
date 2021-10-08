@@ -11,8 +11,9 @@ Este é o repositório da IDE oficial da linguagem de programação NÓS. Caso q
 
 ## REQUISITOS:
 
-Nodejs versão atual.
-Python Versão atual.
+* Nodejs versão atual.
+
+* Python Versão atual.
 
 ## Project setup
 ```
