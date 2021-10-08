@@ -35,8 +35,7 @@ let commands = [
     {
         "int": "int"
     },
-    
 ];
 
 
-module.exports = commands;
+export default commands;
