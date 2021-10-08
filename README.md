@@ -22,19 +22,27 @@ A sua IDE permite ao programador escolher entre programação Visual (Diagramas 
 
 ### Configuração do projeto
 
-- `npm install`
+```sh
+npm install
+```
 
 #### Compilar e recarregar para o desenvolvimento
 
-- `npm run electron:serve`
+```sh
+npm run electron:serve
+```
 
 #### Compilar e configurar para a produção
 
-- `npm run electron:build`
+```sh
+npm run electron:build
+```
 
 #### Verifica e corrige arquivos
 
-- `npm run lint`
+```sh
+npm run lint
+```
 
 **Veja mais em [NOS](https://www.luk3d.com)**
 
