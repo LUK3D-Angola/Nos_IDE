@@ -1,52 +1,51 @@
 <template>
-  <g @mouseover="handleMouseOver"
-    @mouseleave="handleMouseLeave">
+  <g @mouseover="handleMouseOver" @mouseleave="handleMouseLeave">
     <path :d="dAttr" :style="pathStyle"></path>
     <a v-if="show.delete" @click="deleteLink">
-      <text 
-        
-        text-anchor="middle" 
+      <text
+        text-anchor="middle"
         :transform="arrowTransform"
-        font-size="22" fill="#ffffff">
-       
-         X
-        
-        </text>
-
-     
-
-        
+        font-size="22"
+        fill="#ffffff"
+      >
+        X
+      </text>
     </a>
-    <path v-else d="M -1 -1 L 0 1 L 1 -1 z"
+    <path
+      v-else
+      d="M -1 -1 L 0 1 L 1 -1 z"
       :style="arrowStyle"
-      :transform="arrowTransform">
-      
-      </path>
-      <path v-if="!show.delete" d="M0,0
+      :transform="arrowTransform"
+    >
+    </path>
+    <path
+      v-if="!show.delete"
+      d="M0,0
              L1,-20"
-              :style="arrowStyle"
-            :transform="arrowTransform"
-          style="stroke:#660000; fill:none;"/>
+      :style="arrowStyle"
+      :transform="arrowTransform"
+      style="stroke: #660000; fill: none"
+    />
   </g>
 </template>
 
 <script>
 export default {
-  name: 'NosLink',
+  name: "NosLink",
   props: {
     // start point position [x, y]
     start: {
       type: Array,
       default() {
-        return [0, 0]
-      }
+        return [0, 0];
+      },
     },
     // end point position [x, y]
     end: {
       type: Array,
       default() {
-        return [0, 0]
-      }
+        return [0, 0];
+      },
     },
     id: Number,
   },
@@ -54,8 +53,8 @@ export default {
     return {
       show: {
         delete: false,
-      }
-    }
+      },
+    };
   },
   methods: {
     handleMouseOver() {
@@ -74,41 +73,50 @@ export default {
     },
     caculateRotation() {
       // caculate arrow rotation
-      const angle = -Math.atan2(this.end[0] - this.start[0], this.end[1] - this.start[1]);
-      const degree = angle * 180 / Math.PI;
+      const angle = -Math.atan2(
+        this.end[0] - this.start[0],
+        this.end[1] - this.start[1]
+      );
+      const degree = (angle * 180) / Math.PI;
       return degree < 0 ? degree + 360 : degree;
     },
     deleteLink() {
-      this.$emit('deleteLink')
-    }
+      this.$emit("deleteLink");
+    },
   },
   computed: {
     pathStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
+        stroke: "rgb(255, 136, 85)",
         strokeWidth: 2.73205,
-        fill: 'none',
-      }
+        fill: "none",
+      };
     },
     arrowStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
+        stroke: "rgb(255, 136, 85)",
         strokeWidth: 5.73205,
-        fill: 'none',
-      }
+        fill: "none",
+      };
     },
     arrowTransform() {
       const [arrowX, arrowY] = this.caculateCenterPoint();
-      const degree = this.caculateRotation()
+      const degree = this.caculateRotation();
       return `translate(${arrowX}, ${arrowY}) rotate(${degree})`;
     },
     dAttr() {
-      let cx = this.start[0]+10, cy = this.start[1]-20, ex = this.end[0]+10, ey = this.end[1]-5;
-      let x1 = cx, y1 = cy + 50, x2 = ex, y2 = ey - 50;
+      let cx = this.start[0] + 10,
+        cy = this.start[1] - 20,
+        ex = this.end[0] + 10,
+        ey = this.end[1] - 5;
+      let x1 = cx,
+        y1 = cy + 50,
+        x2 = ex,
+        y2 = ey - 50;
       return `M ${cx}, ${cy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
