@@ -1,8 +1,6 @@
-module.exports = {
-  transpileDependencies: ["vuetify"],
-  pluginOptions: {
-    electronBuilder: {
-        nodeIntegration: true
-    }
-},
+export const transpileDependencies = ["vuetify"];
+export const pluginOptions = {
+  electronBuilder: {
+    nodeIntegration: true
+  }
 };

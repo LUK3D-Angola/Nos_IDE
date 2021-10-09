@@ -1,25 +1,23 @@
 <template>
   <div>
-      <p></p>
+    <p></p>
   </div>
 </template>
 
 <script>
 export default {
-    props: {
-    
+  props: {
     msg: {
       type: String,
-      default: '',
+      default: "",
       required: false,
       /* validator: function (value) {
         return value >= 0
       } */
-    }
-}
-}
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>

@@ -54,19 +54,13 @@ const anyType = new Rete.Socket("Any Type");
 
 /* var anyTypeSocket = new Rete.Socket('Any type');
 numSocket.combineWith(anyTypeSocket); */
-
-
 export class Start extends Rete.Component {
-
-
   constructor(name) {
     super(name.toLowerCase());
   }
 
-   
-
   builder(node) {
-    let outPut = new Rete.Output('run','Start', execution)
+    let outPut = new Rete.Output('run', 'Start', execution)
     node.description = "Starts The Application";
     node.addOutput(outPut);
     console.log(node);
@@ -78,14 +72,13 @@ export class Start extends Rete.Component {
   }
 }
 
-
 export class End extends Rete.Component {
   constructor(name) {
     super(name.toLowerCase());
   }
 
   builder(node) {
-    let inPut = new Rete.Input('run','End', execution,true)
+    let inPut = new Rete.Input('run', 'End', execution, true)
     node.description = "Finish The Application";
     node.addInput(inPut);
     console.log(node);
@@ -97,8 +90,6 @@ export class End extends Rete.Component {
   }
 }
 
-
-
 export class Read extends Rete.Component {
   constructor(name) {
     super(name.toLowerCase());
@@ -107,7 +98,7 @@ export class Read extends Rete.Component {
   builder(node) {
     let out = new Rete.Output("runNext", "Run next", execution);
     let out2 = new Rete.Output("val", "Return Val", anyType);
-    let inPut = new Rete.Input('run','Run', execution)
+    let inPut = new Rete.Input('run', 'Run', execution)
     node.description = "Enable the user to insert a value";
     node.addControl(new NumControl(this.editor, "num",));
     node.addOutput(out);
@@ -123,10 +114,8 @@ export class Read extends Rete.Component {
   }
 }
 
-
-
 export class Show extends Rete.Component {
-  constructor(name,tipo) {
+  constructor(name, tipo) {
     /* this.name = name;
     this.tipo = tipo */
     super(name.toLowerCase());
@@ -135,9 +124,7 @@ export class Show extends Rete.Component {
   builder(node) {
     let out2 = new Rete.Output("runNext", "Run Next", execution,);
     let inPut2 = new Rete.Input("run", "Run", execution, true);
-    let inPut = new Rete.Input('num2','Value', anyType)
-
-
+    let inPut = new Rete.Input('num2', 'Value', anyType)
 
     node.description = "Displays a nunmber on the screen";
     node.addOutput(out2);
@@ -147,9 +134,7 @@ export class Show extends Rete.Component {
     var top = offsets.getBoundingClientRect().top + window.pageYOffset - offsets.ownerDocument.documentElement.clientTop;
     var left = offsets.getBoundingClientRect().left + window.pageXOffset - offsets.ownerDocument.documentElement.clientLeft;
 
-    node.position = [left+20, top];
-  
-
+    node.position = [left + 20, top];
     console.log(node);
   }
 
@@ -158,20 +143,17 @@ export class Show extends Rete.Component {
     inputs['str'] = node.data.str;
     inputs['code'] = node.data.code;
     inputs['id'] = node.data.id;
-   
   }
 
   code(node, inputs, add) { // 'node' param is similar to worker's "node"
-        // "inputs" contains variables name
-        add('console.log("hello!")') // add code line
-        add('num', node.data.num); // add variable with value "node.data.num"
-    }
+    // "inputs" contains variables name
+    add('console.log("hello!")') // add code line
+    add('num', node.data.num); // add variable with value "node.data.num"
+  }
 }
 
-
-
 export class If_Else extends Rete.Component {
-  constructor(name,tipo) {
+  constructor(name, tipo) {
     /* this.name = name;
     this.tipo = tipo */
     super(name.toLowerCase());
@@ -181,9 +163,7 @@ export class If_Else extends Rete.Component {
     let out2 = new Rete.Output("true", "True", execution,);
     let out1 = new Rete.Output("false", "False", execution,);
     let inPut2 = new Rete.Input("run", "Run", execution, true);
-    let inPut = new Rete.Input('value','Logic', anyType)
-
-
+    let inPut = new Rete.Input('value', 'Logic', anyType)
 
     node.description = "Capare two numbers and execute diferent functions depending on the *Value";
     node.addOutput(out2);
@@ -194,16 +174,16 @@ export class If_Else extends Rete.Component {
     console.log(node);
   }
 
-  worker(node, inputs, outputs,add) {
-   /*  add('console.log("Hello World! Filipe Lukebana com if e else")') */
-   /*  outputs["num"] = node.data.num;
-    inputs['str'] = node.data.str; */
+  worker(node, inputs, outputs, add) {
+    /*  add('console.log("Hello World! Filipe Lukebana com if e else")') */
+    /*  outputs["num"] = node.data.num;
+     inputs['str'] = node.data.str; */
     inputs['code'] = node.data.code;
     inputs['id'] = node.data.id;
   }
   code(node, inputs, add) { // 'node' param is similar to worker's "node"
-        // "inputs" contains variables name
-        add('console.log("hello!")') // add code line
-        add('num', node.data.num); // add variable with value "node.data.num"
+    // "inputs" contains variables name
+    add('console.log("hello!")') // add code line
+    add('num', node.data.num); // add variable with value "node.data.num"
   }
 }

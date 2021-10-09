@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-const noClass = require('../NosEngine/nos_classe_model') ;
+const noClass = require('../NosEngine/nos_classe_model');
 
 let mainClass = new noClass();
 mainClass.label = "Main";
@@ -10,16 +10,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    ProjectInfo:{
-      name:"",
-      type:"",
-      path:"",
-      author:"",
-      version:"",
-      code:[
+    ProjectInfo: {
+      name: "",
+      type: "",
+      path: "",
+      author: "",
+      version: "",
+      code: [
         mainClass
       ],
-      started:false,
+      started: false,
     }
   },
   mutations: {},

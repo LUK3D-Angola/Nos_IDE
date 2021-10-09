@@ -37,7 +37,6 @@ let rules = {
         'show',
         'args',
         'function',
-
     ],
 
     typeKeywords: [
@@ -254,4 +253,4 @@ function getRules() {
     return rules;
 }
 
-module.exports = rules;
+export default rules;

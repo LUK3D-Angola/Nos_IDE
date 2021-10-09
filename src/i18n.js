@@ -10,8 +10,8 @@ window.i18n = VueI18n;
 
 export default new VueI18n({
     locale: localStorage.lang || 'en',
-    messages:{
-        en:en,
-        pt:pt
+    messages: {
+        en: en,
+        pt: pt
     }
 })

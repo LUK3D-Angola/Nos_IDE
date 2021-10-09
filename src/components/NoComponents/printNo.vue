@@ -1,8 +1,8 @@
 <template>
   <div class="node" :class="[selected(), node.name] | kebab">
-    <div class="title">{{node.name}}</div>
+    <div class="title">{{ node.name }}</div>
 
-    <div class="description">{{node.description}}</div>
+    <div class="description">{{ node.description }}</div>
 
     <!-- Inputs-->
     <!-- <div class="inputs">
@@ -15,7 +15,12 @@
 
     <!-- Controls-->
     <div class="controls">
-      <div class="control" v-for="control in controls()" v-control="control" :key="control.key"></div>
+      <div
+        class="control"
+        v-for="control in controls()"
+        v-control="control"
+        :key="control.key"
+      ></div>
     </div>
 
     <!-- Outputs-->
@@ -36,7 +41,7 @@ export default {
   mixins: [VueRenderPlugin.mixin],
   components: {
     /* Socket: VueRenderPlugin.Socket */
-  }
+  },
 };
 </script>
 

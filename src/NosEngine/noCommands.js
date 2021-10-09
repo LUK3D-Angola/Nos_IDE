@@ -38,8 +38,8 @@ let commands = [
     {
         "string": "string"
     },
-    
+
 ];
 
 
-module.exports = commands;
+export default commands;
